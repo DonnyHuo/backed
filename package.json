@@ -22,7 +22,8 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:migrate:prod": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
-    "vercel-build": "prisma generate && nest build"
+    "vercel-build": "prisma generate && nest build",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@nestjs/common": "^10.3.0",
