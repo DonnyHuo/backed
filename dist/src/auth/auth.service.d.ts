@@ -9,41 +9,22 @@ export declare class AuthService {
     constructor(usersService: UsersService, jwtService: JwtService);
     register(registerDto: RegisterDto): Promise<{
         user: {
-            id: string;
-            email: string;
-            name: string | null;
-            role: import("@prisma/client").$Enums.Role;
+            id: any;
+            email: any;
+            name: any;
+            role: any;
         };
         accessToken: string;
     }>;
     login(loginDto: LoginDto): Promise<{
         user: {
-            id: string;
-            email: string;
-            name: string | null;
-            role: import("@prisma/client").$Enums.Role;
+            id: any;
+            email: any;
+            name: any;
+            role: any;
         };
         accessToken: string;
     }>;
-    validateUser(payload: JwtPayload): Promise<{
-        posts: {
-            title: string;
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
-            content: string | null;
-            published: boolean;
-            authorId: string;
-        }[];
-    } & {
-        email: string;
-        password: string;
-        name: string | null;
-        avatar: string | null;
-        id: string;
-        role: import("@prisma/client").$Enums.Role;
-        createdAt: Date;
-        updatedAt: Date;
-    }>;
+    validateUser(payload: JwtPayload): Promise<any>;
     private generateToken;
 }

@@ -1,105 +1,44 @@
-import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool } from 'pg';
+import { awsCredentialsProvider } from '@vercel/functions/oidc';
+import { attachDatabasePool } from '@vercel/functions';
 import { Signer } from '@aws-sdk/rds-signer';
+import { ClientBase, Pool } from 'pg';
 
-function createPrismaClient() {
-  // Check if we're using AWS IAM auth (Vercel deployment)
-  const isAwsIamAuth = process.env.AWS_ROLE_ARN && process.env.PGHOST;
+const signer = new Signer({
+  hostname: process.env.PGHOST as string,
+  port: Number(process.env.PGPORT),
+  username: process.env.PGUSER as string,
+  region: process.env.AWS_REGION,
+  credentials: awsCredentialsProvider({
+    roleArn: process.env.AWS_ROLE_ARN as string,
+    clientConfig: { region: process.env.AWS_REGION },
+  }),
+});
 
-  if (isAwsIamAuth) {
-    // AWS Aurora with IAM Authentication
-    const signer = new Signer({
-      hostname: process.env.PGHOST!,
-      port: Number(process.env.PGPORT || 5432),
-      username: process.env.PGUSER!,
-      region: process.env.AWS_REGION!,
-    });
+const pool = new Pool({
+  host: process.env.PGHOST,
+  user: process.env.PGUSER,
+  database: process.env.PGDATABASE || 'postgres',
+  // The auth token value can be cached for up to 15 minutes (900 seconds) if desired.
+  password: () => signer.getAuthToken(),
+  port: Number(process.env.PGPORT),
+  // Recommended to switch to `true` in production.
+  // See https://docs.aws.amazon.com/lambda/latest/dg/services-rds.html#rds-lambda-certificates
+  ssl: { rejectUnauthorized: false },
+  max: 20,
+});
+attachDatabasePool(pool);
 
-    // For Vercel, use OIDC credentials
-    if (process.env.VERCEL_OIDC_TOKEN) {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const { awsCredentialsProvider } = require('@vercel/oidc-aws-credentials-provider');
-      (signer as any).credentials = awsCredentialsProvider({
-        roleArn: process.env.AWS_ROLE_ARN!,
-        clientConfig: { region: process.env.AWS_REGION! },
-      });
-    }
-
-    const pool = new Pool({
-      host: process.env.PGHOST,
-      user: process.env.PGUSER,
-      database: process.env.PGDATABASE || 'postgres',
-      port: Number(process.env.PGPORT || 5432),
-      ssl: { rejectUnauthorized: false },
-      password: () => signer.getAuthToken(),
-    });
-
-    const adapter = new PrismaPg(pool);
-    return { client: new PrismaClient({ adapter } as any), pool };
-  } else {
-    // Standard connection (local development)
-    return {
-      client: new PrismaClient({
-        log:
-          process.env.NODE_ENV === 'development' ? ['query', 'info', 'warn', 'error'] : ['error'],
-      }),
-      pool: null,
-    };
-  }
+// Single query transaction.
+export async function query(sql: string, args: unknown[]) {
+  return pool.query(sql, args);
 }
 
-@Injectable()
-export class PrismaService implements OnModuleInit, OnModuleDestroy {
-  private prisma: PrismaClient;
-  private pool: Pool | null;
-
-  constructor() {
-    const { client, pool } = createPrismaClient();
-    this.prisma = client;
-    this.pool = pool;
-  }
-
-  // Proxy all PrismaClient properties
-  get user() {
-    return this.prisma.user;
-  }
-
-  get post() {
-    return this.prisma.post;
-  }
-
-  get $connect() {
-    return this.prisma.$connect.bind(this.prisma);
-  }
-
-  get $disconnect() {
-    return this.prisma.$disconnect.bind(this.prisma);
-  }
-
-  get $transaction() {
-    return this.prisma.$transaction.bind(this.prisma);
-  }
-
-  async onModuleInit() {
-    await this.prisma.$connect();
-  }
-
-  async onModuleDestroy() {
-    await this.prisma.$disconnect();
-    if (this.pool) {
-      await this.pool.end();
-    }
-  }
-
-  // Clean database utility (for testing)
-  async cleanDatabase() {
-    if (process.env.NODE_ENV === 'production') {
-      throw new Error('Cannot clean database in production');
-    }
-
-    await this.prisma.post.deleteMany();
-    await this.prisma.user.deleteMany();
+// Use it for multiple queries transaction.
+export async function withConnection<T>(fn: (client: ClientBase) => Promise<T>): Promise<T> {
+  const client = await pool.connect();
+  try {
+    return await fn(client);
+  } finally {
+    client.release();
   }
 }
