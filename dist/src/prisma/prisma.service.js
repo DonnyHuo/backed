@@ -15,9 +15,7 @@ const client_1 = require("@prisma/client");
 let PrismaService = class PrismaService extends client_1.PrismaClient {
     constructor() {
         super({
-            log: process.env.NODE_ENV === 'development'
-                ? ['query', 'info', 'warn', 'error']
-                : ['error'],
+            log: process.env.NODE_ENV === 'development' ? ['query', 'info', 'warn', 'error'] : ['error'],
         });
     }
     async onModuleInit() {
@@ -30,8 +28,7 @@ let PrismaService = class PrismaService extends client_1.PrismaClient {
         if (process.env.NODE_ENV === 'production') {
             throw new Error('Cannot clean database in production');
         }
-        await this.post.deleteMany();
-        await this.user.deleteMany();
+        await this.$transaction([this.post.deleteMany(), this.user.deleteMany()]);
     }
 };
 exports.PrismaService = PrismaService;

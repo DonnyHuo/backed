@@ -6,35 +6,35 @@ export declare class PostsService {
     constructor(prisma: PrismaService);
     create(createPostDto: CreatePostDto, authorId: string): Promise<{
         author: {
+            id: string;
             email: string;
             name: string | null;
             avatar: string | null;
-            id: string;
         };
     } & {
-        title: string;
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
+        title: string;
         content: string | null;
         published: boolean;
+        createdAt: Date;
+        updatedAt: Date;
         authorId: string;
     }>;
     findAll(page?: number, limit?: number, published?: boolean): Promise<{
         data: ({
             author: {
+                id: string;
                 email: string;
                 name: string | null;
                 avatar: string | null;
-                id: string;
             };
         } & {
-            title: string;
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
+            title: string;
             content: string | null;
             published: boolean;
+            createdAt: Date;
+            updatedAt: Date;
             authorId: string;
         })[];
         meta: {
@@ -46,28 +46,28 @@ export declare class PostsService {
     }>;
     findById(id: string): Promise<{
         author: {
+            id: string;
             email: string;
             name: string | null;
             avatar: string | null;
-            id: string;
         };
     } & {
-        title: string;
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
+        title: string;
         content: string | null;
         published: boolean;
+        createdAt: Date;
+        updatedAt: Date;
         authorId: string;
     }>;
     findByAuthor(authorId: string, page?: number, limit?: number): Promise<{
         data: {
-            title: string;
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
+            title: string;
             content: string | null;
             published: boolean;
+            createdAt: Date;
+            updatedAt: Date;
             authorId: string;
         }[];
         meta: {
@@ -79,36 +79,36 @@ export declare class PostsService {
     }>;
     update(id: string, updatePostDto: UpdatePostDto, userId: string, userRole: string): Promise<{
         author: {
+            id: string;
             email: string;
             name: string | null;
             avatar: string | null;
-            id: string;
         };
     } & {
-        title: string;
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
+        title: string;
         content: string | null;
         published: boolean;
+        createdAt: Date;
+        updatedAt: Date;
         authorId: string;
     }>;
     remove(id: string, userId: string, userRole: string): Promise<{
-        title: string;
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
+        title: string;
         content: string | null;
         published: boolean;
+        createdAt: Date;
+        updatedAt: Date;
         authorId: string;
     }>;
     togglePublish(id: string, userId: string, userRole: string): Promise<{
-        title: string;
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
+        title: string;
         content: string | null;
         published: boolean;
+        createdAt: Date;
+        updatedAt: Date;
         authorId: string;
     }>;
 }

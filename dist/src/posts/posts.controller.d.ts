@@ -6,35 +6,35 @@ export declare class PostsController {
     constructor(postsService: PostsService);
     create(createPostDto: CreatePostDto, user: any): Promise<{
         author: {
+            id: string;
             email: string;
             name: string | null;
             avatar: string | null;
-            id: string;
         };
     } & {
-        title: string;
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
+        title: string;
         content: string | null;
         published: boolean;
+        createdAt: Date;
+        updatedAt: Date;
         authorId: string;
     }>;
     findAll(page?: number, limit?: number, published?: boolean): Promise<{
         data: ({
             author: {
+                id: string;
                 email: string;
                 name: string | null;
                 avatar: string | null;
-                id: string;
             };
         } & {
-            title: string;
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
+            title: string;
             content: string | null;
             published: boolean;
+            createdAt: Date;
+            updatedAt: Date;
             authorId: string;
         })[];
         meta: {
@@ -46,12 +46,12 @@ export declare class PostsController {
     }>;
     findMyPosts(user: any, page?: number, limit?: number): Promise<{
         data: {
-            title: string;
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
+            title: string;
             content: string | null;
             published: boolean;
+            createdAt: Date;
+            updatedAt: Date;
             authorId: string;
         }[];
         meta: {
@@ -63,52 +63,52 @@ export declare class PostsController {
     }>;
     findOne(id: string): Promise<{
         author: {
+            id: string;
             email: string;
             name: string | null;
             avatar: string | null;
-            id: string;
         };
     } & {
-        title: string;
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
+        title: string;
         content: string | null;
         published: boolean;
+        createdAt: Date;
+        updatedAt: Date;
         authorId: string;
     }>;
     update(id: string, updatePostDto: UpdatePostDto, user: any): Promise<{
         author: {
+            id: string;
             email: string;
             name: string | null;
             avatar: string | null;
-            id: string;
         };
     } & {
-        title: string;
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
+        title: string;
         content: string | null;
         published: boolean;
+        createdAt: Date;
+        updatedAt: Date;
         authorId: string;
     }>;
     togglePublish(id: string, user: any): Promise<{
-        title: string;
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
+        title: string;
         content: string | null;
         published: boolean;
+        createdAt: Date;
+        updatedAt: Date;
         authorId: string;
     }>;
     remove(id: string, user: any): Promise<{
-        title: string;
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
+        title: string;
         content: string | null;
         published: boolean;
+        createdAt: Date;
+        updatedAt: Date;
         authorId: string;
     }>;
 }
