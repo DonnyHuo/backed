@@ -1,20 +1,21 @@
 {
   "version": 2,
+  "buildCommand": "pnpm run build",
   "builds": [
     {
-      "src": "src/main.ts",
+      "src": "dist/src/main.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/docs(.*)",
-      "dest": "src/main.ts",
+      "dest": "dist/src/main.js",
       "continue": true
     },
     {
       "src": "/(.*)",
-      "dest": "src/main.ts"
+      "dest": "dist/src/main.js"
     }
   ]
 }
