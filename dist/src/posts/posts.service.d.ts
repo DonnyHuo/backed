@@ -71,6 +71,9 @@ export declare class PostsService {
                 name: string | null;
                 avatar: string | null;
             };
+            _count: {
+                comments: number;
+            };
         } & {
             id: string;
             title: string;

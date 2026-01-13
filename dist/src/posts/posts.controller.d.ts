@@ -55,6 +55,9 @@ export declare class PostsController {
                 name: string | null;
                 avatar: string | null;
             };
+            _count: {
+                comments: number;
+            };
         } & {
             id: string;
             title: string;

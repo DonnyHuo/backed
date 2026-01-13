@@ -109,6 +109,9 @@ export class PostsService {
               avatar: true,
             },
           },
+          _count: {
+            select: { comments: true },
+          },
         },
       }),
       this.prisma.post.count({ where: { authorId } }),
