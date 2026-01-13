@@ -1,11 +1,12 @@
 {
   "version": 2,
   "buildCommand": "pnpm run build",
-  "functions": {
-    "dist/api/index.js": {
-      "runtime": "@vercel/node@3"
+  "builds": [
+    {
+      "src": "dist/api/index.js",
+      "use": "@vercel/node"
     }
-  },
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
