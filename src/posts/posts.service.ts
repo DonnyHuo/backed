@@ -97,6 +97,16 @@ export class PostsService {
         skip,
         take: limitNum,
         orderBy: { createdAt: 'desc' },
+        include: {
+          author: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              avatar: true,
+            },
+          },
+        },
       }),
       this.prisma.post.count({ where: { authorId } }),
     ]);

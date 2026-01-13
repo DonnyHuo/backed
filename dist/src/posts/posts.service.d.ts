@@ -61,7 +61,14 @@ export declare class PostsService {
         authorId: string;
     }>;
     findByAuthor(authorId: string, page?: number, limit?: number): Promise<{
-        data: {
+        data: ({
+            author: {
+                id: string;
+                email: string;
+                name: string | null;
+                avatar: string | null;
+            };
+        } & {
             id: string;
             title: string;
             content: string | null;
@@ -69,7 +76,7 @@ export declare class PostsService {
             createdAt: Date;
             updatedAt: Date;
             authorId: string;
-        }[];
+        })[];
         meta: {
             total: number;
             page: number;
