@@ -1,16 +1,16 @@
 {
   "version": 2,
-  "buildCommand": "pnpm run build",
+  "installCommand": "npm install && npx prisma generate",
   "builds": [
     {
-      "src": "dist/api/index.js",
+      "src": "api/index.ts",
       "use": "@vercel/node"
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/(.*)",
-      "destination": "/dist/api/index.js"
+      "src": "/(.*)",
+      "dest": "/api/index.ts"
     }
   ]
 }
