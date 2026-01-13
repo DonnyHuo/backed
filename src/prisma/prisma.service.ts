@@ -42,7 +42,8 @@ function createPrismaClient() {
     // Standard connection (local development)
     return {
       client: new PrismaClient({
-        log: process.env.NODE_ENV === 'development' ? ['query', 'info', 'warn', 'error'] : ['error'],
+        log:
+          process.env.NODE_ENV === 'development' ? ['query', 'info', 'warn', 'error'] : ['error'],
       }),
       pool: null,
     };
