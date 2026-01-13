@@ -23,6 +23,7 @@ let UsersService = class UsersService {
                 id: true,
                 email: true,
                 name: true,
+                avatar: true,
                 role: true,
                 createdAt: true,
             },

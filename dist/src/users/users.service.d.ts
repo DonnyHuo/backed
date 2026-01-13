@@ -6,19 +6,20 @@ export declare class UsersService {
     constructor(prisma: PrismaService);
     create(createUserDto: CreateUserDto): Promise<{
         id: string;
-        createdAt: Date;
         email: string;
         name: string | null;
+        avatar: string | null;
         role: import("@prisma/client").$Enums.Role;
+        createdAt: Date;
     }>;
     findAll(page?: number, limit?: number): Promise<{
         data: {
             id: string;
-            createdAt: Date;
             email: string;
             name: string | null;
             avatar: string | null;
             role: import("@prisma/client").$Enums.Role;
+            createdAt: Date;
             _count: {
                 posts: number;
             };
@@ -33,49 +34,49 @@ export declare class UsersService {
     findById(id: string): Promise<{
         posts: {
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
             title: string;
             content: string | null;
             published: boolean;
-            createdAt: Date;
-            updatedAt: Date;
             authorId: string;
         }[];
     } & {
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
         email: string;
         password: string;
         name: string | null;
         avatar: string | null;
         role: import("@prisma/client").$Enums.Role;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     findByEmail(email: string): Promise<{
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
         email: string;
         password: string;
         name: string | null;
         avatar: string | null;
         role: import("@prisma/client").$Enums.Role;
+        createdAt: Date;
+        updatedAt: Date;
     } | null>;
     update(id: string, updateUserDto: UpdateUserDto): Promise<{
         id: string;
-        updatedAt: Date;
         email: string;
         name: string | null;
         avatar: string | null;
         role: import("@prisma/client").$Enums.Role;
+        updatedAt: Date;
     }>;
     remove(id: string): Promise<{
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
         email: string;
         password: string;
         name: string | null;
         avatar: string | null;
         role: import("@prisma/client").$Enums.Role;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
 }

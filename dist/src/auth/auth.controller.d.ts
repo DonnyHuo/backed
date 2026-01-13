@@ -10,7 +10,7 @@ export declare class AuthController {
             email: string;
             name: string | null;
             role: import("@prisma/client").$Enums.Role;
-            avatar: any;
+            avatar: string | null;
         };
         accessToken: string;
     }>;
