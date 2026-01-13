@@ -8,6 +8,7 @@ export class CreateCommentDto {
   content: string;
 
   @ApiProperty({ description: 'The ID of the post to comment on' })
-  @IsUUID()
+  @IsString()
+  @IsNotEmpty()
   postId: string;
 }

@@ -23,7 +23,8 @@ __decorate([
 ], CreateCommentDto.prototype, "content", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'The ID of the post to comment on' }),
-    (0, class_validator_1.IsUUID)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateCommentDto.prototype, "postId", void 0);
 //# sourceMappingURL=create-comment.dto.js.map
