@@ -53,6 +53,9 @@ let PostsService = class PostsService {
                             avatar: true,
                         },
                     },
+                    _count: {
+                        select: { comments: true },
+                    },
                 },
                 orderBy: { createdAt: 'desc' },
             }),

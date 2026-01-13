@@ -13,11 +13,11 @@ export declare class PostsService {
         };
     } & {
         id: string;
+        title: string;
+        content: string | null;
+        published: boolean;
         createdAt: Date;
         updatedAt: Date;
-        content: string | null;
-        title: string;
-        published: boolean;
         authorId: string;
     }>;
     findAll(page?: number, limit?: number, published?: boolean): Promise<{
@@ -28,13 +28,16 @@ export declare class PostsService {
                 name: string | null;
                 avatar: string | null;
             };
+            _count: {
+                comments: number;
+            };
         } & {
             id: string;
+            title: string;
+            content: string | null;
+            published: boolean;
             createdAt: Date;
             updatedAt: Date;
-            content: string | null;
-            title: string;
-            published: boolean;
             authorId: string;
         })[];
         meta: {
@@ -53,11 +56,11 @@ export declare class PostsService {
         };
     } & {
         id: string;
+        title: string;
+        content: string | null;
+        published: boolean;
         createdAt: Date;
         updatedAt: Date;
-        content: string | null;
-        title: string;
-        published: boolean;
         authorId: string;
     }>;
     findByAuthor(authorId: string, page?: number, limit?: number): Promise<{
@@ -70,11 +73,11 @@ export declare class PostsService {
             };
         } & {
             id: string;
+            title: string;
+            content: string | null;
+            published: boolean;
             createdAt: Date;
             updatedAt: Date;
-            content: string | null;
-            title: string;
-            published: boolean;
             authorId: string;
         })[];
         meta: {
@@ -93,29 +96,29 @@ export declare class PostsService {
         };
     } & {
         id: string;
+        title: string;
+        content: string | null;
+        published: boolean;
         createdAt: Date;
         updatedAt: Date;
-        content: string | null;
-        title: string;
-        published: boolean;
         authorId: string;
     }>;
     remove(id: string, userId: string, userRole: string): Promise<{
         id: string;
+        title: string;
+        content: string | null;
+        published: boolean;
         createdAt: Date;
         updatedAt: Date;
-        content: string | null;
-        title: string;
-        published: boolean;
         authorId: string;
     }>;
     togglePublish(id: string, userId: string, userRole: string): Promise<{
         id: string;
+        title: string;
+        content: string | null;
+        published: boolean;
         createdAt: Date;
         updatedAt: Date;
-        content: string | null;
-        title: string;
-        published: boolean;
         authorId: string;
     }>;
 }
