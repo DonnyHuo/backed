@@ -2,14 +2,15 @@
 // PostgreSQL Database with User <-> Post relationship
 
 generator client {
-  provider = "prisma-client-js"
-  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+  provider        = "prisma-client-js"
+  binaryTargets   = ["native", "rhel-openssl-1.0.x"]
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL") // 用于线上运行（带连接池）
-  directUrl = env("POSTGRES_URL_NON_POOLING") // 用于本地 db push（直连）
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_DIRECT")
 }
 
 // User Model
