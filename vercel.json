@@ -1,21 +1,16 @@
 {
   "version": 2,
-  "buildCommand": "pnpm run build",
+  "buildCommand": "prisma generate",
   "builds": [
     {
-      "src": "dist/src/main.js",
+      "src": "api/index.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/api/docs(.*)",
-      "dest": "dist/src/main.js",
-      "continue": true
-    },
-    {
       "src": "/(.*)",
-      "dest": "dist/src/main.js"
+      "dest": "api/index.ts"
     }
   ]
 }
