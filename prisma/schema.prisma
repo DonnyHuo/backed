@@ -23,7 +23,8 @@ model User {
   updatedAt DateTime @updatedAt
 
   // Relations
-  posts Post[]
+  posts    Post[]
+  comments Comment[]
 
   @@map("users")
 }
@@ -38,11 +39,30 @@ model Post {
   updatedAt DateTime @updatedAt
 
   // Relations
-  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  author   User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId String
+  comments Comment[]
 
   @@index([authorId])
   @@map("posts")
+}
+
+// Comment Model
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId String
+  post     Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId   String
+
+  @@index([authorId])
+  @@index([postId])
+  @@map("comments")
 }
 
 // Role Enum

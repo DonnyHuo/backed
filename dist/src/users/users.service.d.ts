@@ -36,8 +36,8 @@ export declare class UsersService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            title: string;
             content: string | null;
+            title: string;
             published: boolean;
             authorId: string;
         }[];

@@ -17,6 +17,7 @@ const users_module_1 = require("./users/users.module");
 const posts_module_1 = require("./posts/posts.module");
 const redis_throttler_guard_1 = require("./common/guards/redis-throttler.guard");
 const redis_module_1 = require("./redis/redis.module");
+const comments_module_1 = require("./comments/comments.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -49,6 +50,7 @@ exports.AppModule = AppModule = __decorate([
             auth_module_1.AuthModule,
             users_module_1.UsersModule,
             posts_module_1.PostsModule,
+            comments_module_1.CommentsModule,
         ],
         providers: [
             {

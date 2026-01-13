@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
 import { RedisThrottlerGuard } from './common/guards/redis-throttler.guard';
 import { RedisModule } from './redis/redis.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { RedisModule } from './redis/redis.module';
     AuthModule,
     UsersModule,
     PostsModule,
+    CommentsModule,
   ],
   providers: [
     // Global rate limiting guard with Redis
