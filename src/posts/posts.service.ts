@@ -18,10 +18,7 @@ export class PostsService {
     // Only generate cover if user didn't provide any
     if (coverUrls.length === 0) {
       try {
-        const generatedCover = await this.coverService.generateCover(
-          createPostDto.title,
-          createPostDto.content,
-        );
+        const generatedCover = await this.coverService.generateCover(createPostDto.title);
         if (generatedCover) {
           coverUrls = [generatedCover];
         }
@@ -230,11 +227,9 @@ export class PostsService {
     } else if (updatePostDto.title || updatePostDto.content !== undefined) {
       // Only auto-generate cover if title or content is being updated and no custom coverUrls provided
       const title = updatePostDto.title || post.title;
-      const content =
-        updatePostDto.content !== undefined ? updatePostDto.content : post.content || '';
 
       try {
-        const generatedCover = await this.coverService.generateCover(title, content);
+        const generatedCover = await this.coverService.generateCover(title);
         if (generatedCover) {
           updateData.coverUrls = [generatedCover];
         }

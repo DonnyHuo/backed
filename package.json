@@ -41,7 +41,6 @@
     "@vercel/functions": "^3.3.5",
     "@vercel/oidc-aws-credentials-provider": "^3.0.6",
     "bcryptjs": "^2.4.3",
-    "canvas": "^3.2.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cloudinary": "^2.8.0",

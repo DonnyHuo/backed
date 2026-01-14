@@ -13,12 +13,12 @@ export declare class PostsController {
         };
     } & {
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
+        title: string;
         content: string | null;
         coverUrls: string[];
-        title: string;
         published: boolean;
+        createdAt: Date;
+        updatedAt: Date;
         authorId: string;
     }>;
     findAll(page?: number, limit?: number, published?: boolean, user?: any): Promise<{
@@ -60,24 +60,24 @@ export declare class PostsController {
         data: {
             isLiked: boolean;
             likedAt: Date;
-            _count: {
-                comments: number;
-                likes: number;
-                favorites: number;
-            };
             author: {
                 id: string;
                 email: string;
                 name: string | null;
                 avatar: string | null;
             };
+            _count: {
+                comments: number;
+                likes: number;
+                favorites: number;
+            };
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
+            title: string;
             content: string | null;
             coverUrls: string[];
-            title: string;
             published: boolean;
+            createdAt: Date;
+            updatedAt: Date;
             authorId: string;
         }[];
         meta: {
@@ -91,24 +91,24 @@ export declare class PostsController {
         data: {
             isFavorited: boolean;
             favoritedAt: Date;
-            _count: {
-                comments: number;
-                likes: number;
-                favorites: number;
-            };
             author: {
                 id: string;
                 email: string;
                 name: string | null;
                 avatar: string | null;
             };
+            _count: {
+                comments: number;
+                likes: number;
+                favorites: number;
+            };
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
+            title: string;
             content: string | null;
             coverUrls: string[];
-            title: string;
             published: boolean;
+            createdAt: Date;
+            updatedAt: Date;
             authorId: string;
         }[];
         meta: {
@@ -132,24 +132,24 @@ export declare class PostsController {
         isFavorited: boolean;
         likes: undefined;
         favorites: undefined;
-        _count: {
-            comments: number;
-            likes: number;
-            favorites: number;
-        };
         author: {
             id: string;
             email: string;
             name: string | null;
             avatar: string | null;
         };
+        _count: {
+            comments: number;
+            likes: number;
+            favorites: number;
+        };
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
+        title: string;
         content: string | null;
         coverUrls: string[];
-        title: string;
         published: boolean;
+        createdAt: Date;
+        updatedAt: Date;
         authorId: string;
     }>;
     toggleLike(id: string, user: any): Promise<{
@@ -169,32 +169,32 @@ export declare class PostsController {
         };
     } & {
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
+        title: string;
         content: string | null;
         coverUrls: string[];
-        title: string;
         published: boolean;
+        createdAt: Date;
+        updatedAt: Date;
         authorId: string;
     }>;
     togglePublish(id: string, user: any): Promise<{
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
+        title: string;
         content: string | null;
         coverUrls: string[];
-        title: string;
         published: boolean;
+        createdAt: Date;
+        updatedAt: Date;
         authorId: string;
     }>;
     remove(id: string, user: any): Promise<{
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
+        title: string;
         content: string | null;
         coverUrls: string[];
-        title: string;
         published: boolean;
+        createdAt: Date;
+        updatedAt: Date;
         authorId: string;
     }>;
 }

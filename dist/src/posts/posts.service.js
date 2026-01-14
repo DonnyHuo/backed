@@ -22,7 +22,7 @@ let PostsService = class PostsService {
         let coverUrls = createPostDto.coverUrls || [];
         if (coverUrls.length === 0) {
             try {
-                const generatedCover = await this.coverService.generateCover(createPostDto.title, createPostDto.content);
+                const generatedCover = await this.coverService.generateCover(createPostDto.title);
                 if (generatedCover) {
                     coverUrls = [generatedCover];
                 }
@@ -207,9 +207,8 @@ let PostsService = class PostsService {
         }
         else if (updatePostDto.title || updatePostDto.content !== undefined) {
             const title = updatePostDto.title || post.title;
-            const content = updatePostDto.content !== undefined ? updatePostDto.content : post.content || '';
             try {
-                const generatedCover = await this.coverService.generateCover(title, content);
+                const generatedCover = await this.coverService.generateCover(title);
                 if (generatedCover) {
                     updateData.coverUrls = [generatedCover];
                 }
