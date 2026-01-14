@@ -5,16 +5,14 @@ export declare class UsersController {
     constructor(usersService: UsersService);
     findAll(page?: number, limit?: number): Promise<{
         data: {
+            id: string;
             email: string;
+            password: string;
             name: string | null;
             avatar: string | null;
-            bio: string | null;
-            id: string;
             role: import("@prisma/client").$Enums.Role;
             createdAt: Date;
-            _count: {
-                posts: number;
-            };
+            updatedAt: Date;
         }[];
         meta: {
             total: number;
@@ -25,22 +23,21 @@ export declare class UsersController {
     }>;
     getProfile(user: any): Promise<{
         posts: {
-            title: string;
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            published: boolean;
+            title: string;
             content: string | null;
             coverUrls: string[];
+            published: boolean;
             authorId: string;
         }[];
     } & {
+        id: string;
         email: string;
         password: string;
         name: string | null;
         avatar: string | null;
-        bio: string | null;
-        id: string;
         role: import("@prisma/client").$Enums.Role;
         createdAt: Date;
         updatedAt: Date;
@@ -49,22 +46,32 @@ export declare class UsersController {
         likesReceived: number;
         favoritesReceived: number;
         postsCount: number;
-        followersCount: number;
-        followingCount: number;
+        followersCount: any;
+        followingCount: any;
         commentsReceived: number;
     }>;
     getPublicProfile(id: string, user: any): Promise<{
         isFollowing: boolean;
-        postsCount: number;
-        followersCount: number;
-        followingCount: number;
+        postsCount: any;
+        followersCount: any;
+        followingCount: any;
         _count: undefined;
+        id: string;
         email: string;
+        password: string;
         name: string | null;
         avatar: string | null;
-        bio: string | null;
-        id: string;
+        role: import("@prisma/client").$Enums.Role;
         createdAt: Date;
+        updatedAt: Date;
+    }>;
+    getUserStats(id: string): Promise<{
+        likesReceived: number;
+        favoritesReceived: number;
+        postsCount: number;
+        followersCount: any;
+        followingCount: any;
+        commentsReceived: number;
     }>;
     getUserPosts(id: string, user: any, page?: number, limit?: number): Promise<{
         data: ({
@@ -74,19 +81,19 @@ export declare class UsersController {
                 favorites: number;
             };
             author: {
+                id: string;
                 email: string;
                 name: string | null;
                 avatar: string | null;
-                id: string;
             };
         } & {
-            title: string;
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            published: boolean;
+            title: string;
             content: string | null;
             coverUrls: string[];
+            published: boolean;
             authorId: string;
         })[];
         meta: {
@@ -98,42 +105,41 @@ export declare class UsersController {
     }>;
     findOne(id: string): Promise<{
         posts: {
-            title: string;
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            published: boolean;
+            title: string;
             content: string | null;
             coverUrls: string[];
+            published: boolean;
             authorId: string;
         }[];
     } & {
+        id: string;
         email: string;
         password: string;
         name: string | null;
         avatar: string | null;
-        bio: string | null;
-        id: string;
         role: import("@prisma/client").$Enums.Role;
         createdAt: Date;
         updatedAt: Date;
     }>;
     update(id: string, updateUserDto: UpdateUserDto, user: any): Promise<{
-        email: string;
-        name: string | null;
-        avatar: string | null;
-        bio: string | null;
         id: string;
-        role: import("@prisma/client").$Enums.Role;
-        updatedAt: Date;
-    }>;
-    remove(id: string, user: any): Promise<{
         email: string;
         password: string;
         name: string | null;
         avatar: string | null;
-        bio: string | null;
+        role: import("@prisma/client").$Enums.Role;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
+    remove(id: string, user: any): Promise<{
         id: string;
+        email: string;
+        password: string;
+        name: string | null;
+        avatar: string | null;
         role: import("@prisma/client").$Enums.Role;
         createdAt: Date;
         updatedAt: Date;

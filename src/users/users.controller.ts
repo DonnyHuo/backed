@@ -50,6 +50,14 @@ export class UsersController {
     return this.usersService.getPublicProfile(id, user?.id);
   }
 
+  @Get(':id/stats')
+  @ApiOperation({ summary: 'Get user statistics (public)' })
+  @ApiResponse({ status: 200, description: 'Returns user statistics' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  getUserStats(@Param('id') id: string) {
+    return this.usersService.getMyStats(id);
+  }
+
   @Get(':id/posts')
   @UseGuards(OptionalJwtAuthGuard)
   @ApiOperation({ summary: 'Get user posts' })

@@ -36,6 +36,9 @@ let UsersController = class UsersController {
     getPublicProfile(id, user) {
         return this.usersService.getPublicProfile(id, user?.id);
     }
+    getUserStats(id) {
+        return this.usersService.getMyStats(id);
+    }
     getUserPosts(id, user, page = 1, limit = 10) {
         return this.usersService.getUserPosts(id, user?.id, page, limit);
     }
@@ -104,6 +107,16 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "getPublicProfile", null);
+__decorate([
+    (0, common_1.Get)(':id/stats'),
+    (0, swagger_1.ApiOperation)({ summary: 'Get user statistics (public)' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Returns user statistics' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'User not found' }),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "getUserStats", null);
 __decorate([
     (0, common_1.Get)(':id/posts'),
     (0, common_1.UseGuards)(optional_jwt_auth_guard_1.OptionalJwtAuthGuard),
