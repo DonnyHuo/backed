@@ -11,9 +11,9 @@ export declare class JwtStrategy extends JwtStrategy_base {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            title: string;
             content: string | null;
             coverUrls: string[];
-            title: string;
             published: boolean;
             authorId: string;
         }[];

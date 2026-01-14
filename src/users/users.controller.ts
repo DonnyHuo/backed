@@ -4,16 +4,17 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@ne
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 
 @ApiTags('Users')
 @Controller('users')
-@UseGuards(JwtAuthGuard)
-@ApiBearerAuth()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all users with pagination' })
   @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
   @ApiQuery({ name: 'limit', required: false, type: Number, example: 10 })
@@ -23,13 +24,50 @@ export class UsersController {
   }
 
   @Get('profile')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Get current user profile with posts' })
   @ApiResponse({ status: 200, description: 'Returns current user profile' })
   getProfile(@CurrentUser() user: any) {
     return this.usersService.findById(user.id);
   }
 
+  @Get('stats')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get my statistics (likes/favorites received)' })
+  @ApiResponse({ status: 200, description: 'Returns user statistics' })
+  getMyStats(@CurrentUser() user: any) {
+    return this.usersService.getMyStats(user.id);
+  }
+
+  @Get(':id/public')
+  @UseGuards(OptionalJwtAuthGuard)
+  @ApiOperation({ summary: 'Get public user profile (for viewing other users)' })
+  @ApiResponse({ status: 200, description: 'Returns public user profile' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  getPublicProfile(@Param('id') id: string, @CurrentUser() user: any) {
+    return this.usersService.getPublicProfile(id, user?.id);
+  }
+
+  @Get(':id/posts')
+  @UseGuards(OptionalJwtAuthGuard)
+  @ApiOperation({ summary: 'Get user posts' })
+  @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
+  @ApiQuery({ name: 'limit', required: false, type: Number, example: 10 })
+  @ApiResponse({ status: 200, description: 'Returns user posts' })
+  getUserPosts(
+    @Param('id') id: string,
+    @CurrentUser() user: any,
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+  ) {
+    return this.usersService.getUserPosts(id, user?.id, page, limit);
+  }
+
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Get user by ID' })
   @ApiResponse({ status: 200, description: 'Returns user details' })
   @ApiResponse({ status: 404, description: 'User not found' })
@@ -38,7 +76,9 @@ export class UsersController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update user' })
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Update user profile' })
   @ApiResponse({ status: 200, description: 'User updated successfully' })
   @ApiResponse({ status: 404, description: 'User not found' })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @CurrentUser() user: any) {
@@ -50,6 +90,8 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete user' })
   @ApiResponse({ status: 200, description: 'User deleted successfully' })
   @ApiResponse({ status: 404, description: 'User not found' })

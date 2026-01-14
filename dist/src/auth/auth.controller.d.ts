@@ -11,6 +11,7 @@ export declare class AuthController {
             name: string | null;
             role: import("@prisma/client").$Enums.Role;
             avatar: string | null;
+            bio: any;
         };
         accessToken: string;
     }>;
@@ -21,6 +22,7 @@ export declare class AuthController {
             name: string | null;
             role: import("@prisma/client").$Enums.Role;
             avatar: string | null;
+            bio: any;
         };
         accessToken: string;
     }>;
@@ -30,6 +32,7 @@ export declare class AuthController {
         name: any;
         role: any;
         avatar: any;
+        bio: any;
         createdAt: any;
     }>;
 }

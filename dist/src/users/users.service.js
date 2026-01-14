@@ -24,6 +24,7 @@ let UsersService = class UsersService {
                 email: true,
                 name: true,
                 avatar: true,
+                bio: true,
                 role: true,
                 createdAt: true,
             },
@@ -42,6 +43,7 @@ let UsersService = class UsersService {
                     email: true,
                     name: true,
                     avatar: true,
+                    bio: true,
                     role: true,
                     createdAt: true,
                     _count: {
@@ -80,6 +82,17 @@ let UsersService = class UsersService {
     async findByEmail(email) {
         return this.prisma.user.findUnique({
             where: { email },
+            select: {
+                id: true,
+                email: true,
+                password: true,
+                name: true,
+                avatar: true,
+                bio: true,
+                role: true,
+                createdAt: true,
+                updatedAt: true,
+            },
         });
     }
     async update(id, updateUserDto) {
@@ -92,6 +105,7 @@ let UsersService = class UsersService {
                 email: true,
                 name: true,
                 avatar: true,
+                bio: true,
                 role: true,
                 updatedAt: true,
             },
@@ -102,6 +116,126 @@ let UsersService = class UsersService {
         return this.prisma.user.delete({
             where: { id },
         });
+    }
+    async getPublicProfile(userId, currentUserId) {
+        const user = await this.prisma.user.findUnique({
+            where: { id: userId },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                avatar: true,
+                bio: true,
+                createdAt: true,
+                _count: {
+                    select: {
+                        posts: true,
+                        followers: true,
+                        following: true,
+                    },
+                },
+            },
+        });
+        if (!user) {
+            throw new common_1.NotFoundException(`User with ID ${userId} not found`);
+        }
+        let isFollowing = false;
+        if (currentUserId && currentUserId !== userId) {
+            const follow = await this.prisma.follow.findUnique({
+                where: {
+                    followerId_followingId: {
+                        followerId: currentUserId,
+                        followingId: userId,
+                    },
+                },
+            });
+            isFollowing = !!follow;
+        }
+        return {
+            ...user,
+            isFollowing,
+            postsCount: user._count.posts,
+            followersCount: user._count.followers,
+            followingCount: user._count.following,
+            _count: undefined,
+        };
+    }
+    async getUserPosts(userId, currentUserId, page = 1, limit = 10) {
+        const pageNum = Number(page) || 1;
+        const limitNum = Number(limit) || 10;
+        const skip = (pageNum - 1) * limitNum;
+        const where = currentUserId === userId
+            ? { authorId: userId }
+            : { authorId: userId, published: true };
+        const [posts, total] = await Promise.all([
+            this.prisma.post.findMany({
+                where,
+                skip,
+                take: limitNum,
+                orderBy: { createdAt: 'desc' },
+                include: {
+                    author: {
+                        select: {
+                            id: true,
+                            name: true,
+                            email: true,
+                            avatar: true,
+                        },
+                    },
+                    _count: {
+                        select: { comments: true, likes: true, favorites: true },
+                    },
+                },
+            }),
+            this.prisma.post.count({ where }),
+        ]);
+        return {
+            data: posts,
+            meta: {
+                total,
+                page: pageNum,
+                limit: limitNum,
+                totalPages: Math.ceil(total / limitNum),
+            },
+        };
+    }
+    async getMyStats(userId) {
+        const likesReceived = await this.prisma.like.count({
+            where: {
+                post: {
+                    authorId: userId,
+                },
+            },
+        });
+        const favoritesReceived = await this.prisma.favorite.count({
+            where: {
+                post: {
+                    authorId: userId,
+                },
+            },
+        });
+        const postsCount = await this.prisma.post.count({
+            where: { authorId: userId },
+        });
+        const [followersCount, followingCount] = await Promise.all([
+            this.prisma.follow.count({ where: { followingId: userId } }),
+            this.prisma.follow.count({ where: { followerId: userId } }),
+        ]);
+        const commentsReceived = await this.prisma.comment.count({
+            where: {
+                post: {
+                    authorId: userId,
+                },
+            },
+        });
+        return {
+            likesReceived,
+            favoritesReceived,
+            postsCount,
+            followersCount,
+            followingCount,
+            commentsReceived,
+        };
     }
 };
 exports.UsersService = UsersService;

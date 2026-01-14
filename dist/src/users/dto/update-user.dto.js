@@ -28,7 +28,17 @@ __decorate([
         description: 'User avatar URL',
     }),
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsUrl)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], UpdateUserDto.prototype, "avatar", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({
+        example: 'Hello, I am a developer!',
+        description: 'User bio / personal signature',
+    }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MaxLength)(200),
+    __metadata("design:type", String)
+], UpdateUserDto.prototype, "bio", void 0);
 //# sourceMappingURL=update-user.dto.js.map

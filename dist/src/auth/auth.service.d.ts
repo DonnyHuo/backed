@@ -14,6 +14,7 @@ export declare class AuthService {
             name: string | null;
             role: import("@prisma/client").$Enums.Role;
             avatar: string | null;
+            bio: any;
         };
         accessToken: string;
     }>;
@@ -24,6 +25,7 @@ export declare class AuthService {
             name: string | null;
             role: import("@prisma/client").$Enums.Role;
             avatar: string | null;
+            bio: any;
         };
         accessToken: string;
     }>;
@@ -32,9 +34,9 @@ export declare class AuthService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            title: string;
             content: string | null;
             coverUrls: string[];
-            title: string;
             published: boolean;
             authorId: string;
         }[];

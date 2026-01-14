@@ -37,6 +37,7 @@ let AuthController = class AuthController {
             name: user.name,
             role: user.role,
             avatar: user.avatar,
+            bio: user.bio,
             createdAt: user.createdAt,
         };
     }

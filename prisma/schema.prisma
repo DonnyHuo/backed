@@ -18,6 +18,7 @@ model User {
   password  String
   name      String?
   avatar    String?
+  bio       String?  // Personal signature / bio
   role      Role     @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -28,7 +29,31 @@ model User {
   likes     Like[]
   favorites Favorite[]
 
+  // Follow relations
+  followers Follow[] @relation("following") // Users who follow this user
+  following Follow[] @relation("follower")  // Users this user follows
+
   @@map("users")
+}
+
+// Follow Model (User follows User)
+model Follow {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  // The user who is following
+  follower   User   @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
+  followerId String
+
+  // The user being followed
+  following   User   @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
+  followingId String
+
+  // Unique constraint: one user can only follow another user once
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+  @@map("follows")
 }
 
 // Post Model

@@ -13,6 +13,15 @@ export class UpdateUserDto {
     description: 'User avatar URL',
   })
   @IsOptional()
-  @IsUrl()
+  @IsString()
   avatar?: string;
+
+  @ApiPropertyOptional({
+    example: 'Hello, I am a developer!',
+    description: 'User bio / personal signature',
+  })
+  @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  bio?: string;
 }

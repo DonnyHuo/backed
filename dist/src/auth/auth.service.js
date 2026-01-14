@@ -39,6 +39,7 @@ let AuthService = class AuthService {
                 name: user.name,
                 role: user.role,
                 avatar: user.avatar,
+                bio: user.bio,
             },
             accessToken: token,
         };
@@ -61,6 +62,7 @@ let AuthService = class AuthService {
                 name: user.name,
                 role: user.role,
                 avatar: user.avatar,
+                bio: user.bio,
             },
             accessToken: token,
         };
