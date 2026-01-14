@@ -18,6 +18,9 @@ async function bootstrap() {
   if (!cachedApp) {
     const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
 
+    // Set global prefix
+    app.setGlobalPrefix('api');
+
     // Enable CORS
     app.enableCors({
       origin: true,
@@ -58,4 +61,3 @@ export default async function handler(req: Request, res: Response) {
   await bootstrap();
   server(req, res);
 }
-

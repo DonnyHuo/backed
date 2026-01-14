@@ -12,6 +12,7 @@ let cachedApp;
 async function bootstrap() {
     if (!cachedApp) {
         const app = await core_1.NestFactory.create(app_module_1.AppModule, new platform_express_1.ExpressAdapter(server));
+        app.setGlobalPrefix('api');
         app.enableCors({
             origin: true,
             credentials: true,
