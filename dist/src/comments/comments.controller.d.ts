@@ -5,10 +5,10 @@ export declare class CommentsController {
     constructor(commentsService: CommentsService);
     create(createCommentDto: CreateCommentDto, user: any): Promise<{
         author: {
-            id: string;
             email: string;
             name: string | null;
             avatar: string | null;
+            id: string;
         };
     } & {
         id: string;
@@ -20,10 +20,10 @@ export declare class CommentsController {
     }>;
     findByPost(postId: string): Promise<({
         author: {
-            id: string;
             email: string;
             name: string | null;
             avatar: string | null;
+            id: string;
         };
     } & {
         id: string;

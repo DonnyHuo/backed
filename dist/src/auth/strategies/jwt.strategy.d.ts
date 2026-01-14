@@ -8,21 +8,22 @@ export declare class JwtStrategy extends JwtStrategy_base {
     constructor(authService: AuthService, configService: ConfigService);
     validate(payload: JwtPayload): Promise<{
         posts: {
+            title: string;
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            title: string;
+            published: boolean;
             content: string | null;
             coverUrls: string[];
-            published: boolean;
             authorId: string;
         }[];
     } & {
-        id: string;
         email: string;
         password: string;
         name: string | null;
         avatar: string | null;
+        bio: string | null;
+        id: string;
         role: import("@prisma/client").$Enums.Role;
         createdAt: Date;
         updatedAt: Date;

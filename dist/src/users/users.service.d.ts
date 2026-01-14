@@ -5,25 +5,26 @@ export declare class UsersService {
     private readonly prisma;
     constructor(prisma: PrismaService);
     create(createUserDto: CreateUserDto): Promise<{
-        id: string;
         email: string;
-        password: string;
         name: string | null;
         avatar: string | null;
+        bio: string | null;
+        id: string;
         role: import("@prisma/client").$Enums.Role;
         createdAt: Date;
-        updatedAt: Date;
     }>;
     findAll(page?: number, limit?: number): Promise<{
         data: {
-            id: string;
             email: string;
-            password: string;
             name: string | null;
             avatar: string | null;
+            bio: string | null;
+            id: string;
             role: import("@prisma/client").$Enums.Role;
             createdAt: Date;
-            updatedAt: Date;
+            _count: {
+                posts: number;
+            };
         }[];
         meta: {
             total: number;
@@ -34,69 +35,69 @@ export declare class UsersService {
     }>;
     findById(id: string): Promise<{
         posts: {
+            title: string;
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            title: string;
+            published: boolean;
             content: string | null;
             coverUrls: string[];
-            published: boolean;
             authorId: string;
         }[];
     } & {
-        id: string;
         email: string;
         password: string;
         name: string | null;
         avatar: string | null;
+        bio: string | null;
+        id: string;
         role: import("@prisma/client").$Enums.Role;
         createdAt: Date;
         updatedAt: Date;
     }>;
     findByEmail(email: string): Promise<{
-        id: string;
         email: string;
         password: string;
         name: string | null;
         avatar: string | null;
+        bio: string | null;
+        id: string;
         role: import("@prisma/client").$Enums.Role;
         createdAt: Date;
         updatedAt: Date;
     } | null>;
     update(id: string, updateUserDto: UpdateUserDto): Promise<{
-        id: string;
         email: string;
-        password: string;
         name: string | null;
         avatar: string | null;
+        bio: string | null;
+        id: string;
         role: import("@prisma/client").$Enums.Role;
-        createdAt: Date;
         updatedAt: Date;
     }>;
     remove(id: string): Promise<{
-        id: string;
         email: string;
         password: string;
         name: string | null;
         avatar: string | null;
+        bio: string | null;
+        id: string;
         role: import("@prisma/client").$Enums.Role;
         createdAt: Date;
         updatedAt: Date;
     }>;
     getPublicProfile(userId: string, currentUserId?: string): Promise<{
         isFollowing: boolean;
-        postsCount: any;
-        followersCount: any;
-        followingCount: any;
+        postsCount: number;
+        followersCount: number;
+        followingCount: number;
         _count: undefined;
-        id: string;
         email: string;
-        password: string;
         name: string | null;
         avatar: string | null;
-        role: import("@prisma/client").$Enums.Role;
+        bio: string | null;
+        id: string;
         createdAt: Date;
-        updatedAt: Date;
     }>;
     getUserPosts(userId: string, currentUserId?: string, page?: number, limit?: number): Promise<{
         data: ({
@@ -106,19 +107,19 @@ export declare class UsersService {
                 favorites: number;
             };
             author: {
-                id: string;
                 email: string;
                 name: string | null;
                 avatar: string | null;
+                id: string;
             };
         } & {
+            title: string;
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            title: string;
+            published: boolean;
             content: string | null;
             coverUrls: string[];
-            published: boolean;
             authorId: string;
         })[];
         meta: {
@@ -132,8 +133,8 @@ export declare class UsersService {
         likesReceived: number;
         favoritesReceived: number;
         postsCount: number;
-        followersCount: any;
-        followingCount: any;
+        followersCount: number;
+        followingCount: number;
         commentsReceived: number;
     }>;
 }

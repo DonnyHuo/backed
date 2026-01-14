@@ -8,19 +8,19 @@ export declare class PostsService {
     constructor(prisma: PrismaService, coverService: CoverService);
     create(createPostDto: CreatePostDto, authorId: string): Promise<{
         author: {
-            id: string;
             email: string;
             name: string | null;
             avatar: string | null;
+            id: string;
         };
     } & {
-        id: string;
         title: string;
-        content: string | null;
-        coverUrls: string[];
-        published: boolean;
+        id: string;
         createdAt: Date;
         updatedAt: Date;
+        published: boolean;
+        content: string | null;
+        coverUrls: string[];
         authorId: string;
     }>;
     findAll(page?: number, limit?: number, published?: boolean, userId?: string): Promise<{
@@ -37,24 +37,24 @@ export declare class PostsService {
         isFavorited: boolean;
         likes: undefined;
         favorites: undefined;
-        author: {
-            id: string;
-            email: string;
-            name: string | null;
-            avatar: string | null;
-        };
         _count: {
             comments: number;
             likes: number;
             favorites: number;
         };
-        id: string;
+        author: {
+            email: string;
+            name: string | null;
+            avatar: string | null;
+            id: string;
+        };
         title: string;
-        content: string | null;
-        coverUrls: string[];
-        published: boolean;
+        id: string;
         createdAt: Date;
         updatedAt: Date;
+        published: boolean;
+        content: string | null;
+        coverUrls: string[];
         authorId: string;
     }>;
     findByAuthor(authorId: string, page?: number, limit?: number, userId?: string): Promise<{
@@ -68,39 +68,39 @@ export declare class PostsService {
     }>;
     update(id: string, updatePostDto: UpdatePostDto, userId: string, userRole: string): Promise<{
         author: {
-            id: string;
             email: string;
             name: string | null;
             avatar: string | null;
+            id: string;
         };
     } & {
-        id: string;
         title: string;
-        content: string | null;
-        coverUrls: string[];
-        published: boolean;
+        id: string;
         createdAt: Date;
         updatedAt: Date;
+        published: boolean;
+        content: string | null;
+        coverUrls: string[];
         authorId: string;
     }>;
     remove(id: string, userId: string, userRole: string): Promise<{
-        id: string;
         title: string;
-        content: string | null;
-        coverUrls: string[];
-        published: boolean;
+        id: string;
         createdAt: Date;
         updatedAt: Date;
+        published: boolean;
+        content: string | null;
+        coverUrls: string[];
         authorId: string;
     }>;
     togglePublish(id: string, userId: string, userRole: string): Promise<{
-        id: string;
         title: string;
-        content: string | null;
-        coverUrls: string[];
-        published: boolean;
+        id: string;
         createdAt: Date;
         updatedAt: Date;
+        published: boolean;
+        content: string | null;
+        coverUrls: string[];
         authorId: string;
     }>;
     toggleLike(postId: string, userId: string): Promise<{
@@ -115,24 +115,24 @@ export declare class PostsService {
         data: {
             isLiked: boolean;
             likedAt: Date;
-            author: {
-                id: string;
-                email: string;
-                name: string | null;
-                avatar: string | null;
-            };
             _count: {
                 comments: number;
                 likes: number;
                 favorites: number;
             };
-            id: string;
+            author: {
+                email: string;
+                name: string | null;
+                avatar: string | null;
+                id: string;
+            };
             title: string;
-            content: string | null;
-            coverUrls: string[];
-            published: boolean;
+            id: string;
             createdAt: Date;
             updatedAt: Date;
+            published: boolean;
+            content: string | null;
+            coverUrls: string[];
             authorId: string;
         }[];
         meta: {
@@ -146,24 +146,24 @@ export declare class PostsService {
         data: {
             isFavorited: boolean;
             favoritedAt: Date;
-            author: {
-                id: string;
-                email: string;
-                name: string | null;
-                avatar: string | null;
-            };
             _count: {
                 comments: number;
                 likes: number;
                 favorites: number;
             };
-            id: string;
+            author: {
+                email: string;
+                name: string | null;
+                avatar: string | null;
+                id: string;
+            };
             title: string;
-            content: string | null;
-            coverUrls: string[];
-            published: boolean;
+            id: string;
             createdAt: Date;
             updatedAt: Date;
+            published: boolean;
+            content: string | null;
+            coverUrls: string[];
             authorId: string;
         }[];
         meta: {

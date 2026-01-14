@@ -6,19 +6,19 @@ export declare class PostsController {
     constructor(postsService: PostsService);
     create(createPostDto: CreatePostDto, user: any): Promise<{
         author: {
-            id: string;
             email: string;
             name: string | null;
             avatar: string | null;
+            id: string;
         };
     } & {
-        id: string;
         title: string;
-        content: string | null;
-        coverUrls: string[];
-        published: boolean;
+        id: string;
         createdAt: Date;
         updatedAt: Date;
+        published: boolean;
+        content: string | null;
+        coverUrls: string[];
         authorId: string;
     }>;
     findAll(page?: number, limit?: number, published?: boolean, user?: any): Promise<{
@@ -60,24 +60,24 @@ export declare class PostsController {
         data: {
             isLiked: boolean;
             likedAt: Date;
-            author: {
-                id: string;
-                email: string;
-                name: string | null;
-                avatar: string | null;
-            };
             _count: {
                 comments: number;
                 likes: number;
                 favorites: number;
             };
-            id: string;
+            author: {
+                email: string;
+                name: string | null;
+                avatar: string | null;
+                id: string;
+            };
             title: string;
-            content: string | null;
-            coverUrls: string[];
-            published: boolean;
+            id: string;
             createdAt: Date;
             updatedAt: Date;
+            published: boolean;
+            content: string | null;
+            coverUrls: string[];
             authorId: string;
         }[];
         meta: {
@@ -91,24 +91,24 @@ export declare class PostsController {
         data: {
             isFavorited: boolean;
             favoritedAt: Date;
-            author: {
-                id: string;
-                email: string;
-                name: string | null;
-                avatar: string | null;
-            };
             _count: {
                 comments: number;
                 likes: number;
                 favorites: number;
             };
-            id: string;
+            author: {
+                email: string;
+                name: string | null;
+                avatar: string | null;
+                id: string;
+            };
             title: string;
-            content: string | null;
-            coverUrls: string[];
-            published: boolean;
+            id: string;
             createdAt: Date;
             updatedAt: Date;
+            published: boolean;
+            content: string | null;
+            coverUrls: string[];
             authorId: string;
         }[];
         meta: {
@@ -132,24 +132,24 @@ export declare class PostsController {
         isFavorited: boolean;
         likes: undefined;
         favorites: undefined;
-        author: {
-            id: string;
-            email: string;
-            name: string | null;
-            avatar: string | null;
-        };
         _count: {
             comments: number;
             likes: number;
             favorites: number;
         };
-        id: string;
+        author: {
+            email: string;
+            name: string | null;
+            avatar: string | null;
+            id: string;
+        };
         title: string;
-        content: string | null;
-        coverUrls: string[];
-        published: boolean;
+        id: string;
         createdAt: Date;
         updatedAt: Date;
+        published: boolean;
+        content: string | null;
+        coverUrls: string[];
         authorId: string;
     }>;
     toggleLike(id: string, user: any): Promise<{
@@ -162,39 +162,39 @@ export declare class PostsController {
     }>;
     update(id: string, updatePostDto: UpdatePostDto, user: any): Promise<{
         author: {
-            id: string;
             email: string;
             name: string | null;
             avatar: string | null;
+            id: string;
         };
     } & {
-        id: string;
         title: string;
-        content: string | null;
-        coverUrls: string[];
-        published: boolean;
+        id: string;
         createdAt: Date;
         updatedAt: Date;
+        published: boolean;
+        content: string | null;
+        coverUrls: string[];
         authorId: string;
     }>;
     togglePublish(id: string, user: any): Promise<{
-        id: string;
         title: string;
-        content: string | null;
-        coverUrls: string[];
-        published: boolean;
+        id: string;
         createdAt: Date;
         updatedAt: Date;
+        published: boolean;
+        content: string | null;
+        coverUrls: string[];
         authorId: string;
     }>;
     remove(id: string, user: any): Promise<{
-        id: string;
         title: string;
-        content: string | null;
-        coverUrls: string[];
-        published: boolean;
+        id: string;
         createdAt: Date;
         updatedAt: Date;
+        published: boolean;
+        content: string | null;
+        coverUrls: string[];
         authorId: string;
     }>;
 }

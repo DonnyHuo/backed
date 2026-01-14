@@ -8,25 +8,37 @@ export declare class FollowsService {
     }>;
     isFollowing(followerId: string, followingId: string): Promise<boolean>;
     getFollowers(userId: string, page?: number, limit?: number): Promise<{
-        data: any;
+        data: {
+            email: string;
+            name: string | null;
+            avatar: string | null;
+            bio: string | null;
+            id: string;
+        }[];
         meta: {
-            total: any;
+            total: number;
             page: number;
             limit: number;
             totalPages: number;
         };
     }>;
     getFollowing(userId: string, page?: number, limit?: number): Promise<{
-        data: any;
+        data: {
+            email: string;
+            name: string | null;
+            avatar: string | null;
+            bio: string | null;
+            id: string;
+        }[];
         meta: {
-            total: any;
+            total: number;
             page: number;
             limit: number;
             totalPages: number;
         };
     }>;
     getFollowCounts(userId: string): Promise<{
-        followers: any;
-        following: any;
+        followers: number;
+        following: number;
     }>;
 }
