@@ -35,3 +35,6 @@ prisma/*.db-journal
 .vercel
 
 .env*.local
+
+# Generated cover images (local development only)
+public/covers/

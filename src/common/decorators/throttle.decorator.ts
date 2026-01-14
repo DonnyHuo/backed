@@ -5,7 +5,7 @@ export const THROTTLE_TTL_KEY = 'throttle:ttl';
 
 export interface ThrottleOptions {
   limit: number; // Number of requests allowed
-  ttl: number;   // Time window in seconds
+  ttl: number; // Time window in seconds
 }
 
 /**
@@ -24,4 +24,3 @@ export const CustomThrottle = (options: ThrottleOptions) => {
  * Skip throttle for specific routes
  */
 export const SkipThrottle = () => SetMetadata('skipThrottle', true);
-

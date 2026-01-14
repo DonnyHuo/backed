@@ -22,7 +22,10 @@ __decorate([
     __metadata("design:type", String)
 ], CreatePostDto.prototype, "title", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ example: 'This is the content of my post...', description: 'Post content' }),
+    (0, swagger_1.ApiPropertyOptional)({
+        example: 'This is the content of my post...',
+        description: 'Post content',
+    }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
@@ -33,4 +36,14 @@ __decorate([
     (0, class_validator_1.IsBoolean)(),
     __metadata("design:type", Boolean)
 ], CreatePostDto.prototype, "published", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({
+        example: ['https://example.com/image1.jpg', 'https://example.com/image2.jpg'],
+        description: 'Custom cover image URLs (optional, will auto-generate one if not provided)',
+    }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsString)({ each: true }),
+    __metadata("design:type", Array)
+], CreatePostDto.prototype, "coverUrls", void 0);
 //# sourceMappingURL=create-post.dto.js.map

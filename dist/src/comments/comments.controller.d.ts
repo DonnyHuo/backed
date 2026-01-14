@@ -12,9 +12,9 @@ export declare class CommentsController {
         };
     } & {
         id: string;
-        content: string;
         createdAt: Date;
         updatedAt: Date;
+        content: string;
         authorId: string;
         postId: string;
     }>;
@@ -27,17 +27,17 @@ export declare class CommentsController {
         };
     } & {
         id: string;
-        content: string;
         createdAt: Date;
         updatedAt: Date;
+        content: string;
         authorId: string;
         postId: string;
     })[]>;
     remove(id: string, user: any): Promise<{
         id: string;
-        content: string;
         createdAt: Date;
         updatedAt: Date;
+        content: string;
         authorId: string;
         postId: string;
     }>;

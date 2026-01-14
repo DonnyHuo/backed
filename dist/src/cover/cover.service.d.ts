@@ -1,0 +1,30 @@
+import { ConfigService } from '@nestjs/config';
+export declare class CoverService {
+    private configService;
+    private readonly logger;
+    private readonly cloudinaryConfig;
+    private readonly backgroundImageUrls;
+    constructor(configService: ConfigService);
+    private generateRandomColor;
+    generateCover(title: string, _content?: string): Promise<string>;
+    private generateCoverFallback;
+    private generateColorsFromHash;
+    private applyTemplate;
+    private drawLinearGradient;
+    private drawRadialGradient;
+    private drawDiagonalStripes;
+    private drawGeometricShapes;
+    private drawMeshGradient;
+    private drawWavePattern;
+    private drawTitleOnImage;
+    private drawDecorativeElements;
+    private drawCornerDecorations;
+    private drawFloatingShapes;
+    private drawGridPattern;
+    private calculateFontSizeForHeight;
+    private calculateFontSize;
+    private wrapText;
+    private uploadToCloudinary;
+    private saveLocally;
+    private extractFontSize;
+}

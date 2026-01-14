@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseGuards,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 
 import { UsersService } from './users.service';
@@ -50,11 +41,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Update user' })
   @ApiResponse({ status: 200, description: 'User updated successfully' })
   @ApiResponse({ status: 404, description: 'User not found' })
-  update(
-    @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
-    @CurrentUser() user: any,
-  ) {
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @CurrentUser() user: any) {
     // Users can only update their own profile (unless admin)
     if (user.id !== id && user.role !== 'ADMIN') {
       throw new Error('Not authorized to update this user');
@@ -74,4 +61,3 @@ export class UsersController {
     return this.usersService.remove(id);
   }
 }
-

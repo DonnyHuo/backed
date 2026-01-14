@@ -1,10 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // Serve static files from public directory (for cover images in development)
+  // Static files are served before the global prefix is applied
+  app.useStaticAssets(join(process.cwd(), 'public'), {
+    prefix: '/',
+  });
 
   // Set global prefix for all routes
   app.setGlobalPrefix('api');

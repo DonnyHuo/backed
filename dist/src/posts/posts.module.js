@@ -10,11 +10,13 @@ exports.PostsModule = void 0;
 const common_1 = require("@nestjs/common");
 const posts_service_1 = require("./posts.service");
 const posts_controller_1 = require("./posts.controller");
+const cover_module_1 = require("../cover/cover.module");
 let PostsModule = class PostsModule {
 };
 exports.PostsModule = PostsModule;
 exports.PostsModule = PostsModule = __decorate([
     (0, common_1.Module)({
+        imports: [cover_module_1.CoverModule],
         controllers: [posts_controller_1.PostsController],
         providers: [posts_service_1.PostsService],
         exports: [posts_service_1.PostsService],

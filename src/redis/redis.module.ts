@@ -10,7 +10,7 @@ import { RedisService } from './redis.service';
       useFactory: async (configService: ConfigService) => {
         const Redis = (await import('ioredis')).default;
         const redisUrl = configService.get<string>('REDIS_URL');
-        
+
         if (!redisUrl) {
           console.warn('⚠️ REDIS_URL not configured, using in-memory fallback');
           return null;
@@ -37,4 +37,3 @@ import { RedisService } from './redis.service';
   exports: ['REDIS_CLIENT', RedisService],
 })
 export class RedisModule {}
-

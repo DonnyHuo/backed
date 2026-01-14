@@ -19,6 +19,7 @@ const posts_service_1 = require("./posts.service");
 const create_post_dto_1 = require("./dto/create-post.dto");
 const update_post_dto_1 = require("./dto/update-post.dto");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
+const optional_jwt_auth_guard_1 = require("../auth/guards/optional-jwt-auth.guard");
 const current_user_decorator_1 = require("../auth/decorators/current-user.decorator");
 let PostsController = class PostsController {
     constructor(postsService) {
@@ -27,14 +28,43 @@ let PostsController = class PostsController {
     create(createPostDto, user) {
         return this.postsService.create(createPostDto, user.id);
     }
-    findAll(page = 1, limit = 10, published) {
-        return this.postsService.findAll(page, limit, published);
+    findAll(page = 1, limit = 10, published, user) {
+        return this.postsService.findAll(page, limit, published, user?.id);
+    }
+    search(keyword, page = 1, limit = 10, user) {
+        if (!keyword || keyword.trim().length === 0) {
+            return {
+                data: [],
+                meta: {
+                    total: 0,
+                    page: 1,
+                    limit: 10,
+                    totalPages: 0,
+                },
+            };
+        }
+        return this.postsService.search(keyword, page, limit, user?.id);
     }
     findMyPosts(user, page = 1, limit = 10) {
-        return this.postsService.findByAuthor(user.id, page, limit);
+        return this.postsService.findByAuthor(user.id, page, limit, user.id);
     }
-    findOne(id) {
-        return this.postsService.findById(id);
+    getLikedPosts(user, page = 1, limit = 10) {
+        return this.postsService.getUserLikedPosts(user.id, page, limit);
+    }
+    getFavoritedPosts(user, page = 1, limit = 10) {
+        return this.postsService.getUserFavoritedPosts(user.id, page, limit);
+    }
+    getCommentedPosts(user, page = 1, limit = 10) {
+        return this.postsService.getUserCommentedPosts(user.id, page, limit);
+    }
+    findOne(id, user) {
+        return this.postsService.findById(id, user?.id);
+    }
+    toggleLike(id, user) {
+        return this.postsService.toggleLike(id, user.id);
+    }
+    toggleFavorite(id, user) {
+        return this.postsService.toggleFavorite(id, user.id);
     }
     update(id, updatePostDto, user) {
         return this.postsService.update(id, updatePostDto, user.id, user.role);
@@ -61,6 +91,7 @@ __decorate([
 ], PostsController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.UseGuards)(optional_jwt_auth_guard_1.OptionalJwtAuthGuard),
     (0, swagger_1.ApiOperation)({ summary: 'Get all posts with pagination' }),
     (0, swagger_1.ApiQuery)({ name: 'page', required: false, type: Number, example: 1 }),
     (0, swagger_1.ApiQuery)({ name: 'limit', required: false, type: Number, example: 10 }),
@@ -69,10 +100,27 @@ __decorate([
     __param(0, (0, common_1.Query)('page')),
     __param(1, (0, common_1.Query)('limit')),
     __param(2, (0, common_1.Query)('published')),
+    __param(3, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object, Boolean]),
+    __metadata("design:paramtypes", [Object, Object, Boolean, Object]),
     __metadata("design:returntype", void 0)
 ], PostsController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('search'),
+    (0, common_1.UseGuards)(optional_jwt_auth_guard_1.OptionalJwtAuthGuard),
+    (0, swagger_1.ApiOperation)({ summary: 'Search posts by keyword' }),
+    (0, swagger_1.ApiQuery)({ name: 'q', required: true, type: String, description: 'Search keyword' }),
+    (0, swagger_1.ApiQuery)({ name: 'page', required: false, type: Number, example: 1 }),
+    (0, swagger_1.ApiQuery)({ name: 'limit', required: false, type: Number, example: 10 }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Returns search results' }),
+    __param(0, (0, common_1.Query)('q')),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('limit')),
+    __param(3, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, Object, Object]),
+    __metadata("design:returntype", void 0)
+], PostsController.prototype, "search", null);
 __decorate([
     (0, common_1.Get)('my'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
@@ -89,15 +137,88 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostsController.prototype, "findMyPosts", null);
 __decorate([
+    (0, common_1.Get)('liked'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Get posts liked by current user' }),
+    (0, swagger_1.ApiQuery)({ name: 'page', required: false, type: Number, example: 1 }),
+    (0, swagger_1.ApiQuery)({ name: 'limit', required: false, type: Number, example: 10 }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Returns liked posts' }),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('limit')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object, Object]),
+    __metadata("design:returntype", void 0)
+], PostsController.prototype, "getLikedPosts", null);
+__decorate([
+    (0, common_1.Get)('favorited'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Get posts favorited by current user' }),
+    (0, swagger_1.ApiQuery)({ name: 'page', required: false, type: Number, example: 1 }),
+    (0, swagger_1.ApiQuery)({ name: 'limit', required: false, type: Number, example: 10 }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Returns favorited posts' }),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('limit')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object, Object]),
+    __metadata("design:returntype", void 0)
+], PostsController.prototype, "getFavoritedPosts", null);
+__decorate([
+    (0, common_1.Get)('commented'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Get posts commented by current user' }),
+    (0, swagger_1.ApiQuery)({ name: 'page', required: false, type: Number, example: 1 }),
+    (0, swagger_1.ApiQuery)({ name: 'limit', required: false, type: Number, example: 10 }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Returns commented posts' }),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('limit')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object, Object]),
+    __metadata("design:returntype", void 0)
+], PostsController.prototype, "getCommentedPosts", null);
+__decorate([
     (0, common_1.Get)(':id'),
+    (0, common_1.UseGuards)(optional_jwt_auth_guard_1.OptionalJwtAuthGuard),
     (0, swagger_1.ApiOperation)({ summary: 'Get post by ID' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Returns post details' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Post not found' }),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], PostsController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Post)(':id/like'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Toggle like on a post' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Like toggled successfully' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Post not found' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], PostsController.prototype, "toggleLike", null);
+__decorate([
+    (0, common_1.Post)(':id/favorite'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Toggle favorite on a post' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Favorite toggled successfully' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Post not found' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], PostsController.prototype, "toggleFavorite", null);
 __decorate([
     (0, common_1.Patch)(':id'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),

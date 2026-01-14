@@ -8,9 +8,11 @@ export class UpdateUserDto {
   @MaxLength(50)
   name?: string;
 
-  @ApiPropertyOptional({ example: 'https://example.com/avatar.jpg', description: 'User avatar URL' })
+  @ApiPropertyOptional({
+    example: 'https://example.com/avatar.jpg',
+    description: 'User avatar URL',
+  })
   @IsOptional()
   @IsUrl()
   avatar?: string;
 }
-

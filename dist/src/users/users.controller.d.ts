@@ -28,6 +28,7 @@ export declare class UsersController {
             createdAt: Date;
             updatedAt: Date;
             content: string | null;
+            coverUrls: string[];
             title: string;
             published: boolean;
             authorId: string;
@@ -48,6 +49,7 @@ export declare class UsersController {
             createdAt: Date;
             updatedAt: Date;
             content: string | null;
+            coverUrls: string[];
             title: string;
             published: boolean;
             authorId: string;

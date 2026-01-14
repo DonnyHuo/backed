@@ -1,9 +1,11 @@
 import { PrismaService } from '../prisma/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { CoverService } from '../cover/cover.service';
 export declare class PostsService {
     private readonly prisma;
-    constructor(prisma: PrismaService);
+    private readonly coverService;
+    constructor(prisma: PrismaService, coverService: CoverService);
     create(createPostDto: CreatePostDto, authorId: string): Promise<{
         author: {
             id: string;
@@ -13,33 +15,16 @@ export declare class PostsService {
         };
     } & {
         id: string;
-        title: string;
-        content: string | null;
-        published: boolean;
         createdAt: Date;
         updatedAt: Date;
+        content: string | null;
+        coverUrls: string[];
+        title: string;
+        published: boolean;
         authorId: string;
     }>;
-    findAll(page?: number, limit?: number, published?: boolean): Promise<{
-        data: ({
-            author: {
-                id: string;
-                email: string;
-                name: string | null;
-                avatar: string | null;
-            };
-            _count: {
-                comments: number;
-            };
-        } & {
-            id: string;
-            title: string;
-            content: string | null;
-            published: boolean;
-            createdAt: Date;
-            updatedAt: Date;
-            authorId: string;
-        })[];
+    findAll(page?: number, limit?: number, published?: boolean, userId?: string): Promise<{
+        data: any[];
         meta: {
             total: number;
             page: number;
@@ -47,42 +32,33 @@ export declare class PostsService {
             totalPages: number;
         };
     }>;
-    findById(id: string): Promise<{
+    findById(id: string, userId?: string): Promise<{
+        isLiked: boolean;
+        isFavorited: boolean;
+        likes: undefined;
+        favorites: undefined;
+        _count: {
+            comments: number;
+            likes: number;
+            favorites: number;
+        };
         author: {
             id: string;
             email: string;
             name: string | null;
             avatar: string | null;
         };
-    } & {
         id: string;
-        title: string;
-        content: string | null;
-        published: boolean;
         createdAt: Date;
         updatedAt: Date;
+        content: string | null;
+        coverUrls: string[];
+        title: string;
+        published: boolean;
         authorId: string;
     }>;
-    findByAuthor(authorId: string, page?: number, limit?: number): Promise<{
-        data: ({
-            author: {
-                id: string;
-                email: string;
-                name: string | null;
-                avatar: string | null;
-            };
-            _count: {
-                comments: number;
-            };
-        } & {
-            id: string;
-            title: string;
-            content: string | null;
-            published: boolean;
-            createdAt: Date;
-            updatedAt: Date;
-            authorId: string;
-        })[];
+    findByAuthor(authorId: string, page?: number, limit?: number, userId?: string): Promise<{
+        data: any[];
         meta: {
             total: number;
             page: number;
@@ -99,29 +75,120 @@ export declare class PostsService {
         };
     } & {
         id: string;
-        title: string;
-        content: string | null;
-        published: boolean;
         createdAt: Date;
         updatedAt: Date;
+        content: string | null;
+        coverUrls: string[];
+        title: string;
+        published: boolean;
         authorId: string;
     }>;
     remove(id: string, userId: string, userRole: string): Promise<{
         id: string;
-        title: string;
-        content: string | null;
-        published: boolean;
         createdAt: Date;
         updatedAt: Date;
+        content: string | null;
+        coverUrls: string[];
+        title: string;
+        published: boolean;
         authorId: string;
     }>;
     togglePublish(id: string, userId: string, userRole: string): Promise<{
         id: string;
-        title: string;
-        content: string | null;
-        published: boolean;
         createdAt: Date;
         updatedAt: Date;
+        content: string | null;
+        coverUrls: string[];
+        title: string;
+        published: boolean;
         authorId: string;
+    }>;
+    toggleLike(postId: string, userId: string): Promise<{
+        liked: boolean;
+        message: string;
+    }>;
+    toggleFavorite(postId: string, userId: string): Promise<{
+        favorited: boolean;
+        message: string;
+    }>;
+    getUserLikedPosts(userId: string, page?: number, limit?: number): Promise<{
+        data: {
+            isLiked: boolean;
+            likedAt: Date;
+            _count: {
+                comments: number;
+                likes: number;
+                favorites: number;
+            };
+            author: {
+                id: string;
+                email: string;
+                name: string | null;
+                avatar: string | null;
+            };
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            content: string | null;
+            coverUrls: string[];
+            title: string;
+            published: boolean;
+            authorId: string;
+        }[];
+        meta: {
+            total: number;
+            page: number;
+            limit: number;
+            totalPages: number;
+        };
+    }>;
+    getUserFavoritedPosts(userId: string, page?: number, limit?: number): Promise<{
+        data: {
+            isFavorited: boolean;
+            favoritedAt: Date;
+            _count: {
+                comments: number;
+                likes: number;
+                favorites: number;
+            };
+            author: {
+                id: string;
+                email: string;
+                name: string | null;
+                avatar: string | null;
+            };
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            content: string | null;
+            coverUrls: string[];
+            title: string;
+            published: boolean;
+            authorId: string;
+        }[];
+        meta: {
+            total: number;
+            page: number;
+            limit: number;
+            totalPages: number;
+        };
+    }>;
+    getUserCommentedPosts(userId: string, page?: number, limit?: number): Promise<{
+        data: any[];
+        meta: {
+            total: number;
+            page: number;
+            limit: number;
+            totalPages: number;
+        };
+    }>;
+    search(keyword: string, page?: number, limit?: number, userId?: string): Promise<{
+        data: any[];
+        meta: {
+            total: number;
+            page: number;
+            limit: number;
+            totalPages: number;
+        };
     }>;
 }

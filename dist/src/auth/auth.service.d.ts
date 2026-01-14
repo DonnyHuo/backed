@@ -33,6 +33,7 @@ export declare class AuthService {
             createdAt: Date;
             updatedAt: Date;
             content: string | null;
+            coverUrls: string[];
             title: string;
             published: boolean;
             authorId: string;

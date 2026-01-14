@@ -18,4 +18,3 @@ export class RegisterDto {
   @MaxLength(50)
   name?: string;
 }
-
