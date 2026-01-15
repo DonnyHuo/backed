@@ -13,7 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PusherService = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
-const Pusher = require("pusher");
+const Pusher = require('pusher');
 let PusherService = PusherService_1 = class PusherService {
     constructor(configService) {
         this.configService = configService;

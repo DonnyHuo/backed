@@ -1,11 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as Pusher from 'pusher';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const Pusher = require('pusher');
 
 @Injectable()
 export class PusherService {
   private readonly logger = new Logger(PusherService.name);
-  private pusher: Pusher | null = null;
+  private pusher: any = null;
 
   constructor(private configService: ConfigService) {
     const appId = this.configService.get<string>('PUSHER_APP_ID');
