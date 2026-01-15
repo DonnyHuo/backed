@@ -11,6 +11,8 @@ import { RedisThrottlerGuard } from './common/guards/redis-throttler.guard';
 import { RedisModule } from './redis/redis.module';
 import { CommentsModule } from './comments/comments.module';
 import { FollowsModule } from './follows/follows.module';
+import { MessagesModule } from './messages/messages.module';
+import { PusherModule } from './pusher/pusher.module';
 
 @Module({
   imports: [
@@ -42,11 +44,13 @@ import { FollowsModule } from './follows/follows.module';
     // Core modules
     PrismaModule,
     RedisModule,
+    PusherModule,
     AuthModule,
     UsersModule,
     PostsModule,
     CommentsModule,
     FollowsModule,
+    MessagesModule,
   ],
   providers: [
     // Global rate limiting guard with Redis

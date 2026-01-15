@@ -19,6 +19,8 @@ const redis_throttler_guard_1 = require("./common/guards/redis-throttler.guard")
 const redis_module_1 = require("./redis/redis.module");
 const comments_module_1 = require("./comments/comments.module");
 const follows_module_1 = require("./follows/follows.module");
+const messages_module_1 = require("./messages/messages.module");
+const pusher_module_1 = require("./pusher/pusher.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -48,11 +50,13 @@ exports.AppModule = AppModule = __decorate([
             ]),
             prisma_module_1.PrismaModule,
             redis_module_1.RedisModule,
+            pusher_module_1.PusherModule,
             auth_module_1.AuthModule,
             users_module_1.UsersModule,
             posts_module_1.PostsModule,
             comments_module_1.CommentsModule,
             follows_module_1.FollowsModule,
+            messages_module_1.MessagesModule,
         ],
         providers: [
             {

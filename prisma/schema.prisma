@@ -33,6 +33,11 @@ model User {
   followers Follow[] @relation("following") // Users who follow this user
   following Follow[] @relation("follower")  // Users this user follows
 
+  // Chat relations
+  conversationMembers ConversationMember[]
+  sentMessages        Message[]
+  ownedConversations  Conversation[] @relation("ConversationOwner")
+
   @@map("users")
 }
 
@@ -135,4 +140,91 @@ model Favorite {
 enum Role {
   USER
   ADMIN
+}
+
+// ==================== Chat Models ====================
+
+// Conversation Model - supports both private and group chats
+model Conversation {
+  id        String           @id @default(cuid())
+  name      String?          // Group name (null for private chats)
+  avatar    String?          // Group avatar
+  type      ConversationType @default(PRIVATE)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  // Owner (for group chats)
+  owner   User?   @relation("ConversationOwner", fields: [ownerId], references: [id])
+  ownerId String?
+
+  // Relations
+  members  ConversationMember[]
+  messages Message[]
+
+  @@map("conversations")
+}
+
+// Conversation Type Enum
+enum ConversationType {
+  PRIVATE // 1-on-1 chat
+  GROUP   // Group chat
+}
+
+// Conversation Member - many-to-many relationship
+model ConversationMember {
+  id       String     @id @default(cuid())
+  joinedAt DateTime   @default(now())
+  role     MemberRole @default(MEMBER)
+  nickname String?    // Nickname in this conversation
+  muted    Boolean    @default(false) // Mute notifications
+
+  // User relation
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  // Conversation relation
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId String
+
+  // Last read message (for unread count calculation)
+  lastReadAt DateTime?
+
+  @@unique([userId, conversationId])
+  @@index([userId])
+  @@index([conversationId])
+  @@map("conversation_members")
+}
+
+// Member Role Enum
+enum MemberRole {
+  OWNER  // Group owner
+  ADMIN  // Administrator
+  MEMBER // Regular member
+}
+
+// Message Model
+model Message {
+  id        String      @id @default(cuid())
+  content   String
+  type      MessageType @default(TEXT)
+  createdAt DateTime    @default(now())
+
+  // Sender
+  sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  senderId String
+
+  // Conversation
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId String
+
+  @@index([conversationId, createdAt])
+  @@index([senderId])
+  @@map("messages")
+}
+
+// Message Type Enum
+enum MessageType {
+  TEXT   // Text message
+  IMAGE  // Image message
+  SYSTEM // System message (user joined, left, etc.)
 }
