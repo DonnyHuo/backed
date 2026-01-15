@@ -13,7 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PusherService = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
-const pusher_1 = require("pusher");
+const Pusher = require("pusher");
 let PusherService = PusherService_1 = class PusherService {
     constructor(configService) {
         this.configService = configService;
@@ -24,7 +24,7 @@ let PusherService = PusherService_1 = class PusherService {
         const secret = this.configService.get('PUSHER_SECRET');
         const cluster = this.configService.get('PUSHER_CLUSTER');
         if (appId && key && secret && cluster) {
-            this.pusher = new pusher_1.default({
+            this.pusher = new Pusher({
                 appId,
                 key,
                 secret,
