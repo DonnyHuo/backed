@@ -49,3 +49,9 @@ export class AddMembersDto {
   memberIds: string[];
 }
 
+export class RemoveMemberDto {
+  @ApiProperty({ example: 'userId123', description: 'User ID to remove' })
+  @IsString()
+  memberId: string;
+}
+

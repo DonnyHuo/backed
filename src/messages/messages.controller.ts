@@ -3,6 +3,7 @@ import {
   Get,
   Post,
   Patch,
+  Delete,
   Body,
   Param,
   Query,
@@ -18,6 +19,7 @@ import {
   CreateGroupConversationDto,
   UpdateGroupConversationDto,
   AddMembersDto,
+  RemoveMemberDto,
 } from './dto/create-conversation.dto';
 
 @ApiTags('Messages')
@@ -78,6 +80,34 @@ export class MessagesController {
     @Body() dto: AddMembersDto,
   ) {
     return this.messagesService.addMembers(conversationId, user.id, dto);
+  }
+
+  @Delete('conversations/:conversationId/members/:memberId')
+  @ApiOperation({ summary: 'Remove a member from group conversation (owner/admin only)' })
+  removeMember(
+    @Param('conversationId') conversationId: string,
+    @Param('memberId') memberId: string,
+    @CurrentUser() user: { id: string },
+  ) {
+    return this.messagesService.removeMember(conversationId, user.id, { memberId });
+  }
+
+  @Post('conversations/:conversationId/leave')
+  @ApiOperation({ summary: 'Leave group conversation' })
+  leaveGroup(
+    @Param('conversationId') conversationId: string,
+    @CurrentUser() user: { id: string },
+  ) {
+    return this.messagesService.leaveGroup(conversationId, user.id);
+  }
+
+  @Delete('conversations/:conversationId')
+  @ApiOperation({ summary: 'Delete group conversation (owner only)' })
+  deleteGroup(
+    @Param('conversationId') conversationId: string,
+    @CurrentUser() user: { id: string },
+  ) {
+    return this.messagesService.deleteGroup(conversationId, user.id);
   }
 
   @Get('conversations/:conversationId/messages')

@@ -12,6 +12,7 @@ import {
   CreateGroupConversationDto,
   UpdateGroupConversationDto,
   AddMembersDto,
+  RemoveMemberDto,
 } from './dto/create-conversation.dto';
 
 @Injectable()
@@ -554,6 +555,191 @@ export class MessagesService {
     }
 
     return this.formatConversation(updated, userId);
+  }
+
+  /**
+   * Remove a member from group conversation (owner/admin only)
+   */
+  async removeMember(conversationId: string, userId: string, dto: RemoveMemberDto) {
+    // Get conversation and verify it's a group
+    const conversation = await this.prisma.conversation.findFirst({
+      where: {
+        id: conversationId,
+        type: 'GROUP',
+        members: { some: { userId } },
+      },
+      include: {
+        members: true,
+      },
+    });
+
+    if (!conversation) {
+      throw new NotFoundException('Group conversation not found');
+    }
+
+    // Check if user has permission (owner or admin)
+    const member = conversation.members.find((m) => m.userId === userId);
+    if (member?.role !== 'OWNER' && member?.role !== 'ADMIN') {
+      throw new ForbiddenException('Only group owner or admin can remove members');
+    }
+
+    // Check if target member exists
+    const targetMember = conversation.members.find((m) => m.userId === dto.memberId);
+    if (!targetMember) {
+      throw new NotFoundException('Member not found in this group');
+    }
+
+    // Cannot remove owner
+    if (targetMember.role === 'OWNER') {
+      throw new BadRequestException('Cannot remove group owner');
+    }
+
+    // Cannot remove yourself (use leaveGroup instead)
+    if (targetMember.userId === userId) {
+      throw new BadRequestException('Cannot remove yourself. Use leave group instead.');
+    }
+
+    // Remove member
+    await this.prisma.conversationMember.delete({
+      where: {
+        userId_conversationId: {
+          userId: dto.memberId,
+          conversationId,
+        },
+      },
+    });
+
+    // Get updated conversation
+    const updated = await this.prisma.conversation.findUnique({
+      where: { id: conversationId },
+      include: {
+        members: {
+          include: {
+            user: {
+              select: { id: true, name: true, email: true, avatar: true },
+            },
+          },
+        },
+      },
+    });
+
+    // Notify removed member
+    await this.pusher.sendUserNotification(dto.memberId, 'removed-from-group', {
+      conversationId,
+      name: updated?.name,
+    });
+
+    // Notify remaining members
+    for (const m of conversation.members) {
+      if (m.userId !== dto.memberId && m.userId !== userId) {
+        await this.pusher.sendUserNotification(m.userId, 'member-removed', {
+          conversationId,
+          removedMemberId: dto.memberId,
+        });
+      }
+    }
+
+    return this.formatConversation(updated, userId);
+  }
+
+  /**
+   * Leave group conversation (member leaves themselves)
+   */
+  async leaveGroup(conversationId: string, userId: string) {
+    // Get conversation and verify it's a group
+    const conversation = await this.prisma.conversation.findFirst({
+      where: {
+        id: conversationId,
+        type: 'GROUP',
+        members: { some: { userId } },
+      },
+      include: {
+        members: true,
+      },
+    });
+
+    if (!conversation) {
+      throw new NotFoundException('Group conversation not found');
+    }
+
+    // Check if user is a member
+    const member = conversation.members.find((m) => m.userId === userId);
+    if (!member) {
+      throw new ForbiddenException('You are not a member of this group');
+    }
+
+    // Owner cannot leave (must delete group instead)
+    if (member.role === 'OWNER') {
+      throw new BadRequestException('Group owner cannot leave. Please delete the group instead.');
+    }
+
+    // Remove member
+    await this.prisma.conversationMember.delete({
+      where: {
+        userId_conversationId: {
+          userId,
+          conversationId,
+        },
+      },
+    });
+
+    // Notify remaining members
+    for (const m of conversation.members) {
+      if (m.userId !== userId) {
+        await this.pusher.sendUserNotification(m.userId, 'member-left', {
+          conversationId,
+          leftMemberId: userId,
+        });
+      }
+    }
+
+    return { success: true, message: 'Left group successfully' };
+  }
+
+  /**
+   * Delete group conversation (owner only)
+   */
+  async deleteGroup(conversationId: string, userId: string) {
+    // Get conversation and verify it's a group
+    const conversation = await this.prisma.conversation.findFirst({
+      where: {
+        id: conversationId,
+        type: 'GROUP',
+        members: { some: { userId } },
+      },
+      include: {
+        members: true,
+      },
+    });
+
+    if (!conversation) {
+      throw new NotFoundException('Group conversation not found');
+    }
+
+    // Check if user is the owner
+    if (conversation.ownerId !== userId) {
+      throw new ForbiddenException('Only group owner can delete the group');
+    }
+
+    // Get all member IDs before deletion for notifications
+    const memberIds = conversation.members.map((m) => m.userId);
+
+    // Delete conversation (cascade will delete members and messages)
+    await this.prisma.conversation.delete({
+      where: { id: conversationId },
+    });
+
+    // Notify all members about group deletion
+    for (const memberId of memberIds) {
+      if (memberId !== userId) {
+        await this.pusher.sendUserNotification(memberId, 'group-deleted', {
+          conversationId,
+          name: conversation.name,
+        });
+      }
+    }
+
+    return { success: true, message: 'Group deleted successfully' };
   }
 
   /**
