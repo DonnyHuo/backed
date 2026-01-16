@@ -29,3 +29,23 @@ export class CreateGroupConversationDto {
   memberIds: string[];
 }
 
+export class UpdateGroupConversationDto {
+  @ApiPropertyOptional({ example: 'New Group Name' })
+  @IsOptional()
+  @IsString()
+  name?: string;
+
+  @ApiPropertyOptional({ example: 'https://example.com/new-avatar.jpg' })
+  @IsOptional()
+  @IsString()
+  avatar?: string;
+}
+
+export class AddMembersDto {
+  @ApiProperty({ example: ['userId1', 'userId2'], description: 'Member IDs to add' })
+  @IsArray()
+  @ArrayMinSize(1)
+  @IsString({ each: true })
+  memberIds: string[];
+}
+

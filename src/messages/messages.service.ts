@@ -10,6 +10,8 @@ import { SendMessageDto } from './dto/send-message.dto';
 import {
   CreatePrivateConversationDto,
   CreateGroupConversationDto,
+  UpdateGroupConversationDto,
+  AddMembersDto,
 } from './dto/create-conversation.dto';
 
 @Injectable()
@@ -387,6 +389,159 @@ export class MessagesService {
     }
 
     return { unreadCount: totalUnread };
+  }
+
+  /**
+   * Update group conversation (name, avatar)
+   */
+  async updateGroupConversation(
+    conversationId: string,
+    userId: string,
+    dto: UpdateGroupConversationDto,
+  ) {
+    // Get conversation and verify it's a group
+    const conversation = await this.prisma.conversation.findFirst({
+      where: {
+        id: conversationId,
+        type: 'GROUP',
+        members: { some: { userId } },
+      },
+      include: {
+        members: {
+          include: {
+            user: {
+              select: { id: true, name: true, email: true, avatar: true },
+            },
+          },
+        },
+      },
+    });
+
+    if (!conversation) {
+      throw new NotFoundException('Group conversation not found');
+    }
+
+    // Check if user has permission (owner or admin)
+    const member = conversation.members.find((m) => m.userId === userId);
+    if (member?.role !== 'OWNER' && member?.role !== 'ADMIN') {
+      throw new ForbiddenException('Only group owner or admin can update group settings');
+    }
+
+    // Update conversation
+    const updateData: any = {};
+    if (dto.name !== undefined) updateData.name = dto.name;
+    if (dto.avatar !== undefined) updateData.avatar = dto.avatar;
+
+    const updated = await this.prisma.conversation.update({
+      where: { id: conversationId },
+      data: updateData,
+      include: {
+        members: {
+          include: {
+            user: {
+              select: { id: true, name: true, email: true, avatar: true },
+            },
+          },
+        },
+      },
+    });
+
+    // Notify all members about the update
+    for (const m of updated.members) {
+      await this.pusher.sendUserNotification(m.userId, 'conversation-updated', {
+        conversationId,
+        name: updated.name,
+        avatar: updated.avatar,
+      });
+    }
+
+    return this.formatConversation(updated, userId);
+  }
+
+  /**
+   * Add members to group conversation
+   */
+  async addMembers(conversationId: string, userId: string, dto: AddMembersDto) {
+    // Get conversation and verify it's a group
+    const conversation = await this.prisma.conversation.findFirst({
+      where: {
+        id: conversationId,
+        type: 'GROUP',
+        members: { some: { userId } },
+      },
+      include: {
+        members: true,
+      },
+    });
+
+    if (!conversation) {
+      throw new NotFoundException('Group conversation not found');
+    }
+
+    // Check if user has permission (owner or admin)
+    const member = conversation.members.find((m) => m.userId === userId);
+    if (member?.role !== 'OWNER' && member?.role !== 'ADMIN') {
+      throw new ForbiddenException('Only group owner or admin can add members');
+    }
+
+    // Verify all new members exist
+    const newMemberIds = dto.memberIds.filter(
+      (id) => !conversation.members.some((m) => m.userId === id),
+    );
+
+    if (newMemberIds.length === 0) {
+      throw new BadRequestException('All users are already members');
+    }
+
+    const users = await this.prisma.user.findMany({
+      where: { id: { in: newMemberIds } },
+    });
+
+    if (users.length !== newMemberIds.length) {
+      throw new BadRequestException('One or more users not found');
+    }
+
+    // Add new members
+    await this.prisma.conversationMember.createMany({
+      data: newMemberIds.map((id) => ({
+        userId: id,
+        conversationId,
+        role: 'MEMBER',
+      })),
+    });
+
+    // Get updated conversation
+    const updated = await this.prisma.conversation.findUnique({
+      where: { id: conversationId },
+      include: {
+        members: {
+          include: {
+            user: {
+              select: { id: true, name: true, email: true, avatar: true },
+            },
+          },
+        },
+      },
+    });
+
+    // Notify new members about being added
+    for (const newMemberId of newMemberIds) {
+      await this.pusher.sendUserNotification(newMemberId, 'new-conversation', {
+        conversationId,
+        name: updated?.name,
+        type: 'GROUP',
+      });
+    }
+
+    // Notify existing members about new members
+    for (const m of conversation.members) {
+      await this.pusher.sendUserNotification(m.userId, 'members-added', {
+        conversationId,
+        newMemberIds,
+      });
+    }
+
+    return this.formatConversation(updated, userId);
   }
 
   /**

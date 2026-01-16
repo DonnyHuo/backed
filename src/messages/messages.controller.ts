@@ -16,6 +16,8 @@ import { SendMessageDto } from './dto/send-message.dto';
 import {
   CreatePrivateConversationDto,
   CreateGroupConversationDto,
+  UpdateGroupConversationDto,
+  AddMembersDto,
 } from './dto/create-conversation.dto';
 
 @ApiTags('Messages')
@@ -56,6 +58,26 @@ export class MessagesController {
     @CurrentUser() user: { id: string },
   ) {
     return this.messagesService.getConversation(conversationId, user.id);
+  }
+
+  @Patch('conversations/:conversationId')
+  @ApiOperation({ summary: 'Update group conversation (name, avatar)' })
+  updateConversation(
+    @Param('conversationId') conversationId: string,
+    @CurrentUser() user: { id: string },
+    @Body() dto: UpdateGroupConversationDto,
+  ) {
+    return this.messagesService.updateGroupConversation(conversationId, user.id, dto);
+  }
+
+  @Post('conversations/:conversationId/members')
+  @ApiOperation({ summary: 'Add members to group conversation' })
+  addMembers(
+    @Param('conversationId') conversationId: string,
+    @CurrentUser() user: { id: string },
+    @Body() dto: AddMembersDto,
+  ) {
+    return this.messagesService.addMembers(conversationId, user.id, dto);
   }
 
   @Get('conversations/:conversationId/messages')
