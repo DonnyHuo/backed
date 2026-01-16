@@ -293,17 +293,25 @@ export class PostsService {
       where: { userId_postId: { userId, postId } },
     });
 
+    let liked: boolean;
     if (existingLike) {
       await this.prisma.like.delete({
         where: { id: existingLike.id },
       });
-      return { liked: false, message: 'Like removed' };
+      liked = false;
     } else {
       await this.prisma.like.create({
         data: { userId, postId },
       });
-      return { liked: true, message: 'Post liked' };
+      liked = true;
     }
+
+    // Get updated count
+    const likesCount = await this.prisma.like.count({
+      where: { postId },
+    });
+
+    return { liked, likesCount, message: liked ? 'Post liked' : 'Like removed' };
   }
 
   // Toggle favorite on a post
@@ -317,17 +325,25 @@ export class PostsService {
       where: { userId_postId: { userId, postId } },
     });
 
+    let favorited: boolean;
     if (existingFavorite) {
       await this.prisma.favorite.delete({
         where: { id: existingFavorite.id },
       });
-      return { favorited: false, message: 'Favorite removed' };
+      favorited = false;
     } else {
       await this.prisma.favorite.create({
         data: { userId, postId },
       });
-      return { favorited: true, message: 'Post favorited' };
+      favorited = true;
     }
+
+    // Get updated count
+    const favoritesCount = await this.prisma.favorite.count({
+      where: { postId },
+    });
+
+    return { favorited, favoritesCount, message: favorited ? 'Post favorited' : 'Favorite removed' };
   }
 
   // Get user's liked posts
