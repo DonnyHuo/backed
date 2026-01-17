@@ -5,7 +5,7 @@ export declare class UsersService {
     private readonly prisma;
     constructor(prisma: PrismaService);
     create(createUserDto: CreateUserDto): Promise<{
-        email: string;
+        email: string | null;
         name: string | null;
         avatar: string | null;
         bio: string | null;
@@ -15,7 +15,7 @@ export declare class UsersService {
     }>;
     findAll(page?: number, limit?: number): Promise<{
         data: {
-            email: string;
+            email: string | null;
             name: string | null;
             avatar: string | null;
             bio: string | null;
@@ -45,19 +45,22 @@ export declare class UsersService {
             authorId: string;
         }[];
     } & {
-        email: string;
-        password: string;
+        email: string | null;
+        password: string | null;
         name: string | null;
         avatar: string | null;
         bio: string | null;
         id: string;
         role: import("@prisma/client").$Enums.Role;
+        walletAddress: string | null;
+        walletNonce: string | null;
+        walletNonceExpiresAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
     }>;
     findByEmail(email: string): Promise<{
-        email: string;
-        password: string;
+        email: string | null;
+        password: string | null;
         name: string | null;
         avatar: string | null;
         bio: string | null;
@@ -67,7 +70,7 @@ export declare class UsersService {
         updatedAt: Date;
     } | null>;
     update(id: string, updateUserDto: UpdateUserDto): Promise<{
-        email: string;
+        email: string | null;
         name: string | null;
         avatar: string | null;
         bio: string | null;
@@ -76,13 +79,16 @@ export declare class UsersService {
         updatedAt: Date;
     }>;
     remove(id: string): Promise<{
-        email: string;
-        password: string;
+        email: string | null;
+        password: string | null;
         name: string | null;
         avatar: string | null;
         bio: string | null;
         id: string;
         role: import("@prisma/client").$Enums.Role;
+        walletAddress: string | null;
+        walletNonce: string | null;
+        walletNonceExpiresAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
     }>;
@@ -92,7 +98,7 @@ export declare class UsersService {
         followersCount: number;
         followingCount: number;
         _count: undefined;
-        email: string;
+        email: string | null;
         name: string | null;
         avatar: string | null;
         bio: string | null;
@@ -107,7 +113,7 @@ export declare class UsersService {
                 favorites: number;
             };
             author: {
-                email: string;
+                email: string | null;
                 name: string | null;
                 avatar: string | null;
                 id: string;

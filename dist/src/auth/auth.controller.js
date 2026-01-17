@@ -18,6 +18,7 @@ const swagger_1 = require("@nestjs/swagger");
 const auth_service_1 = require("./auth.service");
 const register_dto_1 = require("./dto/register.dto");
 const login_dto_1 = require("./dto/login.dto");
+const wallet_login_dto_1 = require("./dto/wallet-login.dto");
 const jwt_auth_guard_1 = require("./guards/jwt-auth.guard");
 const current_user_decorator_1 = require("./decorators/current-user.decorator");
 let AuthController = class AuthController {
@@ -30,10 +31,17 @@ let AuthController = class AuthController {
     async login(loginDto) {
         return this.authService.login(loginDto);
     }
+    async requestNonce(dto) {
+        return this.authService.requestNonce(dto);
+    }
+    async verifyWallet(dto) {
+        return this.authService.verifyWallet(dto);
+    }
     async getProfile(user) {
         return {
             id: user.id,
             email: user.email,
+            walletAddress: user.walletAddress,
             name: user.name,
             role: user.role,
             avatar: user.avatar,
@@ -64,6 +72,35 @@ __decorate([
     __metadata("design:paramtypes", [login_dto_1.LoginDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
+__decorate([
+    (0, common_1.Post)('wallet/nonce'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    (0, swagger_1.ApiOperation)({ summary: 'Request nonce for wallet address to sign' }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Returns nonce and message to sign',
+    }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Invalid address format' }),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [wallet_login_dto_1.RequestNonceDto]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "requestNonce", null);
+__decorate([
+    (0, common_1.Post)('wallet/verify'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    (0, swagger_1.ApiOperation)({ summary: 'Verify wallet signature and login/register' }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Login successful, returns user and access token',
+    }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'Invalid signature or expired nonce' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'No nonce found for this address' }),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [wallet_login_dto_1.VerifyWalletDto]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "verifyWallet", null);
 __decorate([
     (0, common_1.Get)('me'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),

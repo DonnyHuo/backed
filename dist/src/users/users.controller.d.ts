@@ -5,7 +5,7 @@ export declare class UsersController {
     constructor(usersService: UsersService);
     findAll(page?: number, limit?: number): Promise<{
         data: {
-            email: string;
+            email: string | null;
             name: string | null;
             avatar: string | null;
             bio: string | null;
@@ -35,13 +35,16 @@ export declare class UsersController {
             authorId: string;
         }[];
     } & {
-        email: string;
-        password: string;
+        email: string | null;
+        password: string | null;
         name: string | null;
         avatar: string | null;
         bio: string | null;
         id: string;
         role: import("@prisma/client").$Enums.Role;
+        walletAddress: string | null;
+        walletNonce: string | null;
+        walletNonceExpiresAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
     }>;
@@ -59,7 +62,7 @@ export declare class UsersController {
         followersCount: number;
         followingCount: number;
         _count: undefined;
-        email: string;
+        email: string | null;
         name: string | null;
         avatar: string | null;
         bio: string | null;
@@ -82,7 +85,7 @@ export declare class UsersController {
                 favorites: number;
             };
             author: {
-                email: string;
+                email: string | null;
                 name: string | null;
                 avatar: string | null;
                 id: string;
@@ -116,18 +119,21 @@ export declare class UsersController {
             authorId: string;
         }[];
     } & {
-        email: string;
-        password: string;
+        email: string | null;
+        password: string | null;
         name: string | null;
         avatar: string | null;
         bio: string | null;
         id: string;
         role: import("@prisma/client").$Enums.Role;
+        walletAddress: string | null;
+        walletNonce: string | null;
+        walletNonceExpiresAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
     }>;
     update(id: string, updateUserDto: UpdateUserDto, user: any): Promise<{
-        email: string;
+        email: string | null;
         name: string | null;
         avatar: string | null;
         bio: string | null;
@@ -136,13 +142,16 @@ export declare class UsersController {
         updatedAt: Date;
     }>;
     remove(id: string, user: any): Promise<{
-        email: string;
-        password: string;
+        email: string | null;
+        password: string | null;
         name: string | null;
         avatar: string | null;
         bio: string | null;
         id: string;
         role: import("@prisma/client").$Enums.Role;
+        walletAddress: string | null;
+        walletNonce: string | null;
+        walletNonceExpiresAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
     }>;

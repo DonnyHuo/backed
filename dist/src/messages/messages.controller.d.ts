@@ -168,6 +168,45 @@ export declare class MessagesController {
         updatedAt: any;
         otherUser?: undefined;
     }>;
+    removeMember(conversationId: string, memberId: string, user: {
+        id: string;
+    }): Promise<{
+        id: any;
+        type: any;
+        name: any;
+        avatar: any;
+        otherUser: any;
+        members: any;
+        lastMessage: any;
+        myRole: any;
+        createdAt: any;
+        updatedAt: any;
+        ownerId?: undefined;
+    } | {
+        id: any;
+        type: any;
+        name: any;
+        avatar: any;
+        members: any;
+        lastMessage: any;
+        myRole: any;
+        ownerId: any;
+        createdAt: any;
+        updatedAt: any;
+        otherUser?: undefined;
+    }>;
+    leaveGroup(conversationId: string, user: {
+        id: string;
+    }): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+    deleteGroup(conversationId: string, user: {
+        id: string;
+    }): Promise<{
+        success: boolean;
+        message: string;
+    }>;
     getMessages(conversationId: string, user: {
         id: string;
     }, page?: number, limit?: number): Promise<{

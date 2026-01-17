@@ -6,7 +6,7 @@ export declare class PostsController {
     constructor(postsService: PostsService);
     create(createPostDto: CreatePostDto, user: any): Promise<{
         author: {
-            email: string;
+            email: string | null;
             name: string | null;
             avatar: string | null;
             id: string;
@@ -66,7 +66,7 @@ export declare class PostsController {
                 favorites: number;
             };
             author: {
-                email: string;
+                email: string | null;
                 name: string | null;
                 avatar: string | null;
                 id: string;
@@ -97,7 +97,7 @@ export declare class PostsController {
                 favorites: number;
             };
             author: {
-                email: string;
+                email: string | null;
                 name: string | null;
                 avatar: string | null;
                 id: string;
@@ -138,7 +138,7 @@ export declare class PostsController {
             favorites: number;
         };
         author: {
-            email: string;
+            email: string | null;
             name: string | null;
             avatar: string | null;
             id: string;
@@ -164,7 +164,7 @@ export declare class PostsController {
     }>;
     update(id: string, updatePostDto: UpdatePostDto, user: any): Promise<{
         author: {
-            email: string;
+            email: string | null;
             name: string | null;
             avatar: string | null;
             id: string;

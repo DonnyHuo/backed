@@ -15,7 +15,7 @@ export declare class FollowsController {
     }>;
     getFollowers(userId: string, page?: number, limit?: number): Promise<{
         data: {
-            email: string;
+            email: string | null;
             name: string | null;
             avatar: string | null;
             bio: string | null;
@@ -30,7 +30,7 @@ export declare class FollowsController {
     }>;
     getFollowing(userId: string, page?: number, limit?: number): Promise<{
         data: {
-            email: string;
+            email: string | null;
             name: string | null;
             avatar: string | null;
             bio: string | null;
@@ -47,7 +47,7 @@ export declare class FollowsController {
         id: string;
     }, page?: number, limit?: number): Promise<{
         data: {
-            email: string;
+            email: string | null;
             name: string | null;
             avatar: string | null;
             bio: string | null;
@@ -64,7 +64,7 @@ export declare class FollowsController {
         id: string;
     }, page?: number, limit?: number): Promise<{
         data: {
-            email: string;
+            email: string | null;
             name: string | null;
             avatar: string | null;
             bio: string | null;
