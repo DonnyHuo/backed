@@ -46,6 +46,9 @@ export class AuthService {
     });
 
     // Generate JWT token
+    if (!user.email) {
+      throw new ConflictException('User email is required');
+    }
     const token = this.generateToken(user.id, user.email, user.role);
 
     return {
@@ -70,6 +73,11 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    // Check if user has password (not wallet-only user)
+    if (!user.password) {
+      throw new UnauthorizedException('This account uses wallet login. Please use wallet authentication.');
+    }
+
     // Verify password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
@@ -77,6 +85,9 @@ export class AuthService {
     }
 
     // Generate JWT token
+    if (!user.email) {
+      throw new UnauthorizedException('User email is required');
+    }
     const token = this.generateToken(user.id, user.email, user.role);
 
     return {

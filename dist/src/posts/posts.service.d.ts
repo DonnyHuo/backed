@@ -8,7 +8,7 @@ export declare class PostsService {
     constructor(prisma: PrismaService, coverService: CoverService);
     create(createPostDto: CreatePostDto, authorId: string): Promise<{
         author: {
-            email: string;
+            email: string | null;
             name: string | null;
             avatar: string | null;
             id: string;
@@ -43,7 +43,7 @@ export declare class PostsService {
             favorites: number;
         };
         author: {
-            email: string;
+            email: string | null;
             name: string | null;
             avatar: string | null;
             id: string;
@@ -68,7 +68,7 @@ export declare class PostsService {
     }>;
     update(id: string, updatePostDto: UpdatePostDto, userId: string, userRole: string): Promise<{
         author: {
-            email: string;
+            email: string | null;
             name: string | null;
             avatar: string | null;
             id: string;
@@ -123,7 +123,7 @@ export declare class PostsService {
                 favorites: number;
             };
             author: {
-                email: string;
+                email: string | null;
                 name: string | null;
                 avatar: string | null;
                 id: string;
@@ -154,7 +154,7 @@ export declare class PostsService {
                 favorites: number;
             };
             author: {
-                email: string;
+                email: string | null;
                 name: string | null;
                 avatar: string | null;
                 id: string;

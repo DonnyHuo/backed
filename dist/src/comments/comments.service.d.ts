@@ -5,7 +5,7 @@ export declare class CommentsService {
     constructor(prisma: PrismaService);
     create(createCommentDto: CreateCommentDto, userId: string): Promise<{
         author: {
-            email: string;
+            email: string | null;
             name: string | null;
             avatar: string | null;
             id: string;
@@ -20,7 +20,7 @@ export declare class CommentsService {
     }>;
     findByPost(postId: string): Promise<({
         author: {
-            email: string;
+            email: string | null;
             name: string | null;
             avatar: string | null;
             id: string;

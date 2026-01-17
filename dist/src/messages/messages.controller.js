@@ -42,6 +42,15 @@ let MessagesController = class MessagesController {
     addMembers(conversationId, user, dto) {
         return this.messagesService.addMembers(conversationId, user.id, dto);
     }
+    removeMember(conversationId, memberId, user) {
+        return this.messagesService.removeMember(conversationId, user.id, { memberId });
+    }
+    leaveGroup(conversationId, user) {
+        return this.messagesService.leaveGroup(conversationId, user.id);
+    }
+    deleteGroup(conversationId, user) {
+        return this.messagesService.deleteGroup(conversationId, user.id);
+    }
     getMessages(conversationId, user, page, limit) {
         return this.messagesService.getMessages(conversationId, user.id, Number(page) || 1, Number(limit) || 50);
     }
@@ -111,6 +120,34 @@ __decorate([
     __metadata("design:paramtypes", [String, Object, create_conversation_dto_1.AddMembersDto]),
     __metadata("design:returntype", void 0)
 ], MessagesController.prototype, "addMembers", null);
+__decorate([
+    (0, common_1.Delete)('conversations/:conversationId/members/:memberId'),
+    (0, swagger_1.ApiOperation)({ summary: 'Remove a member from group conversation (owner/admin only)' }),
+    __param(0, (0, common_1.Param)('conversationId')),
+    __param(1, (0, common_1.Param)('memberId')),
+    __param(2, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, Object]),
+    __metadata("design:returntype", void 0)
+], MessagesController.prototype, "removeMember", null);
+__decorate([
+    (0, common_1.Post)('conversations/:conversationId/leave'),
+    (0, swagger_1.ApiOperation)({ summary: 'Leave group conversation' }),
+    __param(0, (0, common_1.Param)('conversationId')),
+    __param(1, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], MessagesController.prototype, "leaveGroup", null);
+__decorate([
+    (0, common_1.Delete)('conversations/:conversationId'),
+    (0, swagger_1.ApiOperation)({ summary: 'Delete group conversation (owner only)' }),
+    __param(0, (0, common_1.Param)('conversationId')),
+    __param(1, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], MessagesController.prototype, "deleteGroup", null);
 __decorate([
     (0, common_1.Get)('conversations/:conversationId/messages'),
     (0, swagger_1.ApiOperation)({ summary: 'Get messages for a conversation' }),

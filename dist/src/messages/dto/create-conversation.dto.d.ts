@@ -17,3 +17,6 @@ export declare class UpdateGroupConversationDto {
 export declare class AddMembersDto {
     memberIds: string[];
 }
+export declare class RemoveMemberDto {
+    memberId: string;
+}

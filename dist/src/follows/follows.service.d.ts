@@ -9,7 +9,7 @@ export declare class FollowsService {
     isFollowing(followerId: string, followingId: string): Promise<boolean>;
     getFollowers(userId: string, page?: number, limit?: number): Promise<{
         data: {
-            email: string;
+            email: string | null;
             name: string | null;
             avatar: string | null;
             bio: string | null;
@@ -24,7 +24,7 @@ export declare class FollowsService {
     }>;
     getFollowing(userId: string, page?: number, limit?: number): Promise<{
         data: {
-            email: string;
+            email: string | null;
             name: string | null;
             avatar: string | null;
             bio: string | null;

@@ -1,7 +1,7 @@
 import { PrismaService } from '../prisma/prisma.service';
 import { PusherService } from '../pusher/pusher.service';
 import { SendMessageDto } from './dto/send-message.dto';
-import { CreatePrivateConversationDto, CreateGroupConversationDto, UpdateGroupConversationDto, AddMembersDto } from './dto/create-conversation.dto';
+import { CreatePrivateConversationDto, CreateGroupConversationDto, UpdateGroupConversationDto, AddMembersDto, RemoveMemberDto } from './dto/create-conversation.dto';
 export declare class MessagesService {
     private readonly prisma;
     private readonly pusher;
@@ -199,6 +199,39 @@ export declare class MessagesService {
         createdAt: any;
         updatedAt: any;
         otherUser?: undefined;
+    }>;
+    removeMember(conversationId: string, userId: string, dto: RemoveMemberDto): Promise<{
+        id: any;
+        type: any;
+        name: any;
+        avatar: any;
+        otherUser: any;
+        members: any;
+        lastMessage: any;
+        myRole: any;
+        createdAt: any;
+        updatedAt: any;
+        ownerId?: undefined;
+    } | {
+        id: any;
+        type: any;
+        name: any;
+        avatar: any;
+        members: any;
+        lastMessage: any;
+        myRole: any;
+        ownerId: any;
+        createdAt: any;
+        updatedAt: any;
+        otherUser?: undefined;
+    }>;
+    leaveGroup(conversationId: string, userId: string): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+    deleteGroup(conversationId: string, userId: string): Promise<{
+        success: boolean;
+        message: string;
     }>;
     private formatConversation;
 }
