@@ -70,6 +70,7 @@ export class AuthController {
       role: user.role,
       avatar: user.avatar,
       bio: user.bio,
+      backgroundImage: user.backgroundImage,
       createdAt: user.createdAt,
     };
   }

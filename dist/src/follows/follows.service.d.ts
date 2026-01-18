@@ -9,11 +9,11 @@ export declare class FollowsService {
     isFollowing(followerId: string, followingId: string): Promise<boolean>;
     getFollowers(userId: string, page?: number, limit?: number): Promise<{
         data: {
+            id: string;
             email: string | null;
             name: string | null;
             avatar: string | null;
             bio: string | null;
-            id: string;
         }[];
         meta: {
             total: number;
@@ -24,11 +24,11 @@ export declare class FollowsService {
     }>;
     getFollowing(userId: string, page?: number, limit?: number): Promise<{
         data: {
+            id: string;
             email: string | null;
             name: string | null;
             avatar: string | null;
             bio: string | null;
-            id: string;
         }[];
         meta: {
             total: number;

@@ -16,6 +16,7 @@ export class UsersService {
         name: true,
         avatar: true,
         bio: true,
+        backgroundImage: true,
         role: true,
         createdAt: true,
       },
@@ -37,6 +38,7 @@ export class UsersService {
           name: true,
           avatar: true,
           bio: true,
+          backgroundImage: true,
           role: true,
           createdAt: true,
           _count: {
@@ -87,6 +89,7 @@ export class UsersService {
         name: true,
         avatar: true,
         bio: true,
+        backgroundImage: true,
         role: true,
         createdAt: true,
         updatedAt: true,
@@ -106,6 +109,7 @@ export class UsersService {
         name: true,
         avatar: true,
         bio: true,
+        backgroundImage: true,
         role: true,
         updatedAt: true,
       },
@@ -132,6 +136,8 @@ export class UsersService {
         name: true,
         avatar: true,
         bio: true,
+        backgroundImage: true,
+        walletAddress: true,
         createdAt: true,
         _count: {
           select: {

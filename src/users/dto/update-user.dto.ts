@@ -24,4 +24,12 @@ export class UpdateUserDto {
   @IsString()
   @MaxLength(200)
   bio?: string;
+
+  @ApiPropertyOptional({
+    example: 'https://example.com/background.jpg',
+    description: 'User profile background image URL',
+  })
+  @IsOptional()
+  @IsString()
+  backgroundImage?: string;
 }
