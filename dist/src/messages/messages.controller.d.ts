@@ -212,15 +212,15 @@ export declare class MessagesController {
     }, page?: number, limit?: number): Promise<{
         data: ({
             sender: {
-                id: string;
                 name: string | null;
                 avatar: string | null;
+                id: string;
             };
         } & {
+            type: import("@prisma/client").$Enums.MessageType;
             id: string;
             createdAt: Date;
             content: string;
-            type: import("@prisma/client").$Enums.MessageType;
             conversationId: string;
             senderId: string;
         })[];
@@ -235,15 +235,15 @@ export declare class MessagesController {
         id: string;
     }, dto: SendMessageDto): Promise<{
         sender: {
-            id: string;
             name: string | null;
             avatar: string | null;
+            id: string;
         };
     } & {
+        type: import("@prisma/client").$Enums.MessageType;
         id: string;
         createdAt: Date;
         content: string;
-        type: import("@prisma/client").$Enums.MessageType;
         conversationId: string;
         senderId: string;
     }>;

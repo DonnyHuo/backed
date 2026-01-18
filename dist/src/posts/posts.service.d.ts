@@ -8,17 +8,17 @@ export declare class PostsService {
     constructor(prisma: PrismaService, coverService: CoverService);
     create(createPostDto: CreatePostDto, authorId: string): Promise<{
         author: {
-            id: string;
             email: string | null;
             name: string | null;
             avatar: string | null;
+            id: string;
         };
     } & {
+        title: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
         published: boolean;
-        title: string;
         content: string | null;
         coverUrls: string[];
         authorId: string;
@@ -43,16 +43,16 @@ export declare class PostsService {
             favorites: number;
         };
         author: {
-            id: string;
             email: string | null;
             name: string | null;
             avatar: string | null;
+            id: string;
         };
+        title: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
         published: boolean;
-        title: string;
         content: string | null;
         coverUrls: string[];
         authorId: string;
@@ -68,37 +68,37 @@ export declare class PostsService {
     }>;
     update(id: string, updatePostDto: UpdatePostDto, userId: string, userRole: string): Promise<{
         author: {
-            id: string;
             email: string | null;
             name: string | null;
             avatar: string | null;
+            id: string;
         };
     } & {
+        title: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
         published: boolean;
-        title: string;
         content: string | null;
         coverUrls: string[];
         authorId: string;
     }>;
     remove(id: string, userId: string, userRole: string): Promise<{
+        title: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
         published: boolean;
-        title: string;
         content: string | null;
         coverUrls: string[];
         authorId: string;
     }>;
     togglePublish(id: string, userId: string, userRole: string): Promise<{
+        title: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
         published: boolean;
-        title: string;
         content: string | null;
         coverUrls: string[];
         authorId: string;
@@ -123,16 +123,16 @@ export declare class PostsService {
                 favorites: number;
             };
             author: {
-                id: string;
                 email: string | null;
                 name: string | null;
                 avatar: string | null;
+                id: string;
             };
+            title: string;
             id: string;
             createdAt: Date;
             updatedAt: Date;
             published: boolean;
-            title: string;
             content: string | null;
             coverUrls: string[];
             authorId: string;
@@ -154,16 +154,16 @@ export declare class PostsService {
                 favorites: number;
             };
             author: {
-                id: string;
                 email: string | null;
                 name: string | null;
                 avatar: string | null;
+                id: string;
             };
+            title: string;
             id: string;
             createdAt: Date;
             updatedAt: Date;
             published: boolean;
-            title: string;
             content: string | null;
             coverUrls: string[];
             authorId: string;

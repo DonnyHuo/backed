@@ -6,17 +6,17 @@ export declare class PostsController {
     constructor(postsService: PostsService);
     create(createPostDto: CreatePostDto, user: any): Promise<{
         author: {
-            id: string;
             email: string | null;
             name: string | null;
             avatar: string | null;
+            id: string;
         };
     } & {
+        title: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
         published: boolean;
-        title: string;
         content: string | null;
         coverUrls: string[];
         authorId: string;
@@ -66,16 +66,16 @@ export declare class PostsController {
                 favorites: number;
             };
             author: {
-                id: string;
                 email: string | null;
                 name: string | null;
                 avatar: string | null;
+                id: string;
             };
+            title: string;
             id: string;
             createdAt: Date;
             updatedAt: Date;
             published: boolean;
-            title: string;
             content: string | null;
             coverUrls: string[];
             authorId: string;
@@ -97,16 +97,16 @@ export declare class PostsController {
                 favorites: number;
             };
             author: {
-                id: string;
                 email: string | null;
                 name: string | null;
                 avatar: string | null;
+                id: string;
             };
+            title: string;
             id: string;
             createdAt: Date;
             updatedAt: Date;
             published: boolean;
-            title: string;
             content: string | null;
             coverUrls: string[];
             authorId: string;
@@ -138,16 +138,16 @@ export declare class PostsController {
             favorites: number;
         };
         author: {
-            id: string;
             email: string | null;
             name: string | null;
             avatar: string | null;
+            id: string;
         };
+        title: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
         published: boolean;
-        title: string;
         content: string | null;
         coverUrls: string[];
         authorId: string;
@@ -164,37 +164,37 @@ export declare class PostsController {
     }>;
     update(id: string, updatePostDto: UpdatePostDto, user: any): Promise<{
         author: {
-            id: string;
             email: string | null;
             name: string | null;
             avatar: string | null;
+            id: string;
         };
     } & {
+        title: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
         published: boolean;
-        title: string;
         content: string | null;
         coverUrls: string[];
         authorId: string;
     }>;
     togglePublish(id: string, user: any): Promise<{
+        title: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
         published: boolean;
-        title: string;
         content: string | null;
         coverUrls: string[];
         authorId: string;
     }>;
     remove(id: string, user: any): Promise<{
+        title: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
         published: boolean;
-        title: string;
         content: string | null;
         coverUrls: string[];
         authorId: string;

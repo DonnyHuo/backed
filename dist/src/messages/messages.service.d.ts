@@ -111,15 +111,15 @@ export declare class MessagesService {
     getMessages(conversationId: string, userId: string, page?: number, limit?: number): Promise<{
         data: ({
             sender: {
-                id: string;
                 name: string | null;
                 avatar: string | null;
+                id: string;
             };
         } & {
+            type: import("@prisma/client").$Enums.MessageType;
             id: string;
             createdAt: Date;
             content: string;
-            type: import("@prisma/client").$Enums.MessageType;
             conversationId: string;
             senderId: string;
         })[];
@@ -132,15 +132,15 @@ export declare class MessagesService {
     }>;
     sendMessage(conversationId: string, userId: string, dto: SendMessageDto): Promise<{
         sender: {
-            id: string;
             name: string | null;
             avatar: string | null;
+            id: string;
         };
     } & {
+        type: import("@prisma/client").$Enums.MessageType;
         id: string;
         createdAt: Date;
         content: string;
-        type: import("@prisma/client").$Enums.MessageType;
         conversationId: string;
         senderId: string;
     }>;
